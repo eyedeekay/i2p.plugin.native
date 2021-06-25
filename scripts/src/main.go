@@ -147,6 +147,7 @@ func createZip() error {
 
 	walker := func(path string, info os.FileInfo, err error) error {
 		fmt.Printf("Crawling: %#v\n", path)
+		zippath := strings.Replace(path, "plugin/", "", 1)
 		if err != nil {
 			return err
 		}
@@ -159,7 +160,7 @@ func createZip() error {
 		}
 		defer file.Close()
 
-		f, err := w.Create(path)
+		f, err := w.Create(zippath)
 		if err != nil {
 			return err
 		}
@@ -178,7 +179,7 @@ func createZip() error {
 func createSu3() (*su3.File, error) {
 	su3File := su3.New()
 	su3File.FileType = su3.FileTypeZIP
-	su3File.ContentType = su3.ContentTypeReseed
+	su3File.ContentType = su3.ContentTypePlugin
 
 	err := createZip()
 	if err != err {

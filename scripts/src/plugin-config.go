@@ -79,7 +79,7 @@ func (pc *PluginConfig) PrintPluginName() string {
 }
 func (pc *PluginConfig) PrintKeyName() string {
 	if pc.KeyName == nil {
-		return fmt.Sprintf("key=%s\n", "")
+		return ""
 	}
 	return fmt.Sprintf("key=%s\n", *pc.KeyName)
 }
