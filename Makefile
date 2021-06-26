@@ -23,7 +23,9 @@ readme:
 	./scripts/bin/i2p.plugin.native -h 2>&1 | tee -a README.md
 	echo "\`\`\`" | tee -a README.md
 
-railroad-example:
+examples: clean railroad-example brb-example
+
+railroad-example: all clean
 	./scripts/bin/i2p.plugin.native -name=railroad \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.031 \
@@ -36,8 +38,10 @@ railroad-example:
 		-exename=railroad \
 		-license=MIT \
 		-res=config
+	cp -v *.su3 ../
+	unzip railroad.zip -d railroad-zip
 
-brb-example: 
+brb-example: all clean
 	./scripts/bin/i2p.plugin.native -name=brb \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.09 \
@@ -50,8 +54,11 @@ brb-example:
 		-desc="$(cat ircdesc)" \
 		-exename=brb \
 		-license=MIT
+	cp -v *.su3 ../
+	unzip brb.zip -d brb-zip
 
-#		-icondata=
+clean:
+	rm -rf plugin *.zip *.su3
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;

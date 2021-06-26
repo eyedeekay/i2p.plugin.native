@@ -1,7 +1,7 @@
 package main
 
 import (
-	"archive/zip"
+	//	"archive/zip"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
@@ -11,9 +11,10 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path/filepath"
+	//	"path/filepath"
 	"strings"
 
+	"github.com/fuxingZhang/zip"
 	"github.com/otiai10/copy"
 
 	"i2pgit.org/idk/reseed-tools/su3"
@@ -95,10 +96,11 @@ func main() {
 	}
 
 	fmt.Printf("executable:%s\n", executable)
-	fmt.Printf("resources:%s\n", resdir)
+	fmt.Printf("resources:%s\n", *resdir)
 	fmt.Printf("plugin.config:\n\t%s\n", pc.Print())
 	fmt.Printf("client.config:\n\t%s\n", cc.Print())
 
+	os.RemoveAll("plugin")
 	if err := os.MkdirAll("plugin/lib", 0755); err != nil {
 		log.Fatal(err)
 	}
@@ -136,47 +138,10 @@ func main() {
 }
 
 func createZip() error {
-	file, err := os.Create(*pc.PluginName + ".zip")
+	err := zip.Dir("plugin", *pc.PluginName+".zip", false)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
-	defer file.Close()
-
-	w := zip.NewWriter(file)
-	defer w.Close()
-
-	walker := func(path string, info os.FileInfo, err error) error {
-		fmt.Printf("Crawling: %#v\n", path)
-		zippath := strings.Replace(path, "plugin/", "", 1)
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		file, err := os.Open(path)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-		if strings.HasSuffix(file.Name(), executable) {
-			fmt.Printf("setting executable: %s\n", executable)
-			file.Chmod(0755)
-		}
-
-		f, err := w.Create(zippath)
-		if err != nil {
-			return err
-		}
-
-		_, err = io.Copy(f, file)
-		if err != nil {
-			return err
-		}
-
-		return nil
-	}
-	err = filepath.Walk("plugin", walker)
 	return err
 }
 
