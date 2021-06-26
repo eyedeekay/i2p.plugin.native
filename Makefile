@@ -19,7 +19,7 @@ readme:
 	echo "" | tee -a README.md
 	echo "Here's a copy of the usage while I work on a better README.md:" | tee -a README.md
 	echo "" | tee -a README.md
-	echo "\`\`\`bash" | tee -a README.md
+	echo "\`\`\`markdown" | tee -a README.md
 	./scripts/bin/i2p.plugin.native -h 2>&1 | tee -a README.md
 	echo "\`\`\`" | tee -a README.md
 
