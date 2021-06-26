@@ -8,6 +8,8 @@ plugins don't have a clean way to interface with the JVM, or just don't
 need one. Think of it a little like `checkinstall` but for I2P Plugins.
 Right now it mostly works, and it's pretty cleanly put together.
 
+There are some examples in the Makefile for now.
+
 Here's a copy of the usage while I work on a better README.md:
 
 ```bash

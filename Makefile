@@ -15,6 +15,8 @@ readme:
 	echo "need one. Think of it a little like \`checkinstall\` but for I2P Plugins." | tee -a README.md
 	echo "Right now it mostly works, and it's pretty cleanly put together." | tee -a README.md
 	echo "" | tee -a README.md
+	echo "There are some examples in the Makefile for now." | tee -a README.md
+	echo "" | tee -a README.md
 	echo "Here's a copy of the usage while I work on a better README.md:" | tee -a README.md
 	echo "" | tee -a README.md
 	echo "\`\`\`bash" | tee -a README.md
