@@ -74,7 +74,7 @@ railroad-example-win: all clean railroad-win
 		-version 0.0.031 \
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
-		-clientname=railroad \
+		-clientname=railroad.exe \
 		-consolename="Railroad Blog" \
 		-delaystart="5" \
 		-desc="$(cat desc)" \
@@ -82,7 +82,7 @@ railroad-example-win: all clean railroad-win
 		-license=MIT \
 		-res=config
 	cp -v *.su3 ../railroad-windows.su3
-	unzip -o railroad.zip -d railroad-zip
+	unzip -o railroad.zip -d railroad-zip-win
 
 brb-win:
 	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb.exe .
@@ -93,16 +93,16 @@ brb-example-win: all clean brb-win
 		-version 0.0.09 \
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
-		-clientname=brb \
+		-clientname=brb.exe \
 		-command="\$$PLUGIN/lib/brb.exe -dir=\$$PLUGIN/lib -eris=true -i2psite=true 2>&1 \$$PLUGIN/lib/brb.log" \
 		-consolename="BRB IRC" \
 		-delaystart="5" \
 		-desc="$(cat ircdesc)" \
-		-exename=brb \
+		-exename=brb.exe \
 		-license=MIT \
 		-res=windll
 	cp -v *.su3 ../brb-windows.su3
-	unzip -o brb.zip -d brb-zip
+	unzip -o brb.zip -d brb-zip-win
 
 clean:
 	rm -rf plugin *.zip *.su3
