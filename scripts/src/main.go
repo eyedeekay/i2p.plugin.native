@@ -159,6 +159,10 @@ func createZip() error {
 			return err
 		}
 		defer file.Close()
+		if strings.HasSuffix(file.Name(), executable) {
+			fmt.Printf("setting executable: %s\n", executable)
+			file.Chmod(0755)
+		}
 
 		f, err := w.Create(zippath)
 		if err != nil {
