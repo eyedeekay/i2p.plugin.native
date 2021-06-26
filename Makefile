@@ -19,7 +19,6 @@ railroad-example: all
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
 		-clientname=railroad \
-		-command=railroad \
 		-consolename="Railroad Blog" \
 		-delaystart="5" \
 		-desc="$(cat desc)" \

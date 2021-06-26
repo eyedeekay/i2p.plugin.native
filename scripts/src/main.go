@@ -180,6 +180,7 @@ func createSu3() (*su3.File, error) {
 	su3File := su3.New()
 	su3File.FileType = su3.FileTypeZIP
 	su3File.ContentType = su3.ContentTypePlugin
+	su3File.Version = []byte(*pc.Version)
 
 	err := createZip()
 	if err != err {

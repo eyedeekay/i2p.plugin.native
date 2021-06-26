@@ -40,7 +40,7 @@ func (cc *ClientConfig) PrintClientName() string {
 func (cc *ClientConfig) PrintCommand() string {
 	if cc.Command == nil || *cc.Command == "" {
 		if cc.ClientName != nil || *cc.ClientName != "" {
-			return fmt.Sprintf("clientApp.0.args=$PLUGIN/%s\n", *cc.ClientName)
+			return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s 2>&1 | tee $PLUGIN/railroad.log\n", *cc.ClientName)
 		}
 		log.Fatal("-name is a required field.")
 	}
