@@ -1,6 +1,15 @@
 I2P native plugin generation tool
 =================================
 
+I wrote this way faster than I documented it. Shocking, right?
+
+This is a handy little tool for assembling I2P plugins when those
+plugins don't have a clean way to interface with the JVM, or just don't
+need one. Think of it a little like `checkinstall` but for I2P Plugins.
+Right now it mostly works, and it's pretty cleanly put together.
+
+Here's a copy of the usage while I work on a better README.md:
+
 ```bash
 Usage of ./scripts/bin/i2p.plugin.native:
   -author string

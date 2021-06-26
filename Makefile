@@ -8,6 +8,15 @@ readme:
 	echo "I2P native plugin generation tool" | tee README.md
 	echo "=================================" | tee -a README.md
 	echo "" | tee -a README.md
+	echo "I wrote this way faster than I documented it. Shocking, right?" | tee -a README.md
+	echo "" | tee -a README.md
+	echo "This is a handy little tool for assembling I2P plugins when those" | tee -a README.md
+	echo "plugins don't have a clean way to interface with the JVM, or just don't" | tee -a README.md
+	echo "need one. Think of it a little like \`checkinstall\` but for I2P Plugins." | tee -a README.md
+	echo "Right now it mostly works, and it's pretty cleanly put together." | tee -a README.md
+	echo "" | tee -a README.md
+	echo "Here's a copy of the usage while I work on a better README.md:" | tee -a README.md
+	echo "" | tee -a README.md
 	echo "\`\`\`bash" | tee -a README.md
 	./scripts/bin/i2p.plugin.native -h 2>&1 | tee -a README.md
 	echo "\`\`\`" | tee -a README.md
