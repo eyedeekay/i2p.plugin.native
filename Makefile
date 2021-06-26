@@ -12,7 +12,7 @@ readme:
 	./scripts/bin/i2p.plugin.native -h 2>&1 | tee -a README.md
 	echo "\`\`\`" | tee -a README.md
 
-railroad-example: all
+railroad-example:
 	./scripts/bin/i2p.plugin.native -name=railroad \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.031 \
@@ -23,8 +23,23 @@ railroad-example: all
 		-delaystart="5" \
 		-desc="$(cat desc)" \
 		-exename=railroad \
-		-license=mit \
+		-license=MIT \
 		-res=config
+
+brb-example: 
+	./scripts/bin/i2p.plugin.native -name=brb \
+		-signer=hankhill19580@gmail.com \
+		-version 0.0.09 \
+		-author=hankhill19580@gmail.com \
+		-autostart=true \
+		-clientname=brb \
+		-command="\$$PLUGIN/lib/brb -dir=\$$PLUGIN/lib -eris=true -i2psite=true 2>&1 \$$PLUGIN/lib/brb.log" \
+		-consolename="BRB IRC" \
+		-delaystart="5" \
+		-desc="$(cat ircdesc)" \
+		-exename=brb \
+		-license=MIT
+
 #		-icondata=
 
 fmt:

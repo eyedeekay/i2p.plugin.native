@@ -48,7 +48,7 @@ Usage of ./scripts/bin/i2p.plugin.native:
   -nostop
     	Disable stopping the plugin from the console
   -res string
-    	a directory of additional resources to include in the plugin (default "config")
+    	a directory of additional resources to include in the plugin
   -restart
     	Require a router restart after installing or updating the plugin
   -signer string

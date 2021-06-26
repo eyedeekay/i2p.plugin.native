@@ -57,7 +57,7 @@ func flagsSet() {
 	cc.Delay = flag.String("delaystart", "5", "Delay start of client by seconds")
 	cc.Start = flag.Bool("autostart", true, "Start client automatically")
 	executable = *flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
-	resdir = flag.String("res", "config", "a directory of additional resources to include in the plugin")
+	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")
 	flag.Parse()
 }
 
