@@ -58,7 +58,7 @@ brb-example: all clean brb-lin
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
 		-clientname=brb \
-		-command="\$$PLUGIN/lib/brb -dir=\$$PLUGIN/lib -eris=true -i2psite=true 2>&1 \$$PLUGIN/lib/brb.log" \
+		-command="\$$PLUGIN/lib/brb -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
 		-consolename="BRB IRC" \
 		-delaystart="5" \
 		-desc="$(cat ircdesc)" \
@@ -82,6 +82,7 @@ railroad-example-win: all clean railroad-win
 		-desc="$(cat desc)" \
 		-exename=railroad.exe \
 		-license=MIT \
+		-targetos="windows" \
 		-res=config
 	cp -v *.su3 ../railroad-windows.su3
 	unzip -o railroad.zip -d railroad-zip-win
@@ -96,12 +97,13 @@ brb-example-win: all clean brb-win
 		-author=hankhill19580@gmail.com \
 		-autostart=true \
 		-clientname=brb.exe \
-		-command="\$$PLUGIN/lib/brb.exe -dir=\$$PLUGIN/lib -eris=true -i2psite=true 2>&1 \$$PLUGIN/lib/brb.log" \
+		-command="\$$PLUGIN/lib/brb.exe -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
 		-consolename="BRB IRC" \
 		-delaystart="5" \
 		-desc="$(cat ircdesc)" \
 		-exename=brb.exe \
 		-license=MIT \
+		-targetos="windows" \
 		-res=windll
 	cp -v *.su3 ../brb-windows.su3
 	unzip -o brb.zip -d brb-zip-win

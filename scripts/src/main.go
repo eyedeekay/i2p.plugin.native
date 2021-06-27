@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	//	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/fuxingZhang/zip"
@@ -25,6 +26,7 @@ var cc ClientConfig
 
 var executable string
 var resdir *string
+var targetos *string
 
 func flagsSet() {
 	pc.PluginName = flag.String("name", "", "Name of the plugin")
@@ -54,11 +56,13 @@ func flagsSet() {
 	pc.OnlyInstall = flag.Bool("installonly", false, "Only allow installing with this plugin, fail if a previous installation exists")
 	cc.ClientName = flag.String("clientname", "", "Name of the client, defaults to same as plugin")
 	cc.Command = flag.String("command", "", "Command to start client, defaults to $PLUGIN/exename")
+	cc.CommandArgs = flag.String("commandargs", "", "Pass arguments to command")
 	cc.StopCommand = flag.String("stopcommand", "", "Command to stop client, defaults to killall exename")
 	cc.Delay = flag.String("delaystart", "5", "Delay start of client by seconds")
 	cc.Start = flag.Bool("autostart", true, "Start client automatically")
 	executable = *flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
 	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")
+	targetos = flag.String("targetos", runtime.GOOS, "Target to run the plugin on")
 	flag.Parse()
 }
 
@@ -117,6 +121,26 @@ func main() {
 	}
 	if err := os.Chmod("plugin/lib/"+executable, 0755); err != nil {
 		log.Fatal(err)
+	}
+	switch *targetos {
+	case "windows":
+		if err := Copy("karen.exe", "plugin/lib/"+"karen.exe"); err != nil {
+			log.Fatal(err)
+		}
+	case "linux":
+		if err := Copy("karen", "plugin/lib/"+"karen"); err != nil {
+			log.Fatal(err)
+		}
+		if err := os.Chmod("plugin/lib/"+"karen", 0755); err != nil {
+			log.Fatal(err)
+		}
+	case "darwin":
+		if err := Copy("karen-darwin", "plugin/lib/"+"karen-darwin"); err != nil {
+			log.Fatal(err)
+		}
+		if err := os.Chmod("plugin/lib/"+"karen-darwin", 0755); err != nil {
+			log.Fatal(err)
+		}
 	}
 	if resdir != nil && *resdir != "" {
 		if err := copy.Copy(*resdir, "plugin/lib/"); err != nil {

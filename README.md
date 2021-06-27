@@ -22,6 +22,8 @@ Usage of ./scripts/bin/i2p.plugin.native:
     	Name of the client, defaults to same as plugin
   -command string
     	Command to start client, defaults to $PLUGIN/exename
+  -commandargs string
+    	Pass arguments to command
   -consoleicon string
     	Icon to use in console for Web Apps only. Use icondata for native apps.
   -consolename string
@@ -66,6 +68,8 @@ Usage of ./scripts/bin/i2p.plugin.native:
     	Signer of the plugin
   -stopcommand string
     	Command to stop client, defaults to killall exename
+  -targetos string
+    	Target to run the plugin on (default "linux")
   -updateonly
     	Only allow updates with this plugin, fail if no previous installation exists
   -updateurl string

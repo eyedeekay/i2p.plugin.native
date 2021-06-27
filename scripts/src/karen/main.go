@@ -16,7 +16,7 @@ var (
 	executableFile  = flag.String("exe", "", "Executable file to manage.")
 	executableDir   = flag.String("exedir", "", "Directory to run the executable in.")
 	executablePerms = flag.String("exeperm", "", "Change the permissions of the executable before running it.")
-	executableArgs  = flag.String("args", "", "")
+	executableArgs  = flag.String("args", "", "Pass a set of arguments to the executable")
 
 	runDir        = flag.String("rundir", "", "Directory to store runtime files")
 	restartAlways = flag.Bool("restart-always", true, "If the managed application crashes, automatically restart it.")
@@ -48,7 +48,7 @@ func checkExecutableDir() {
 }
 
 func getExecutable() string {
-	return filepath.Join(*executableDir, *executableFile)
+	return filepath.Join(*executableDir, filepath.Base(*executableFile))
 }
 
 func getArgs() []string {
@@ -57,6 +57,7 @@ func getArgs() []string {
 }
 
 func checkExecutablePerms() {
+	Println("Checking permissions")
 	if runtime.GOOS != "windows" {
 		if *executablePerms == "" {
 			return
@@ -65,13 +66,16 @@ func checkExecutablePerms() {
 		if precheckErr != nil {
 			log.Fatal(precheckErr)
 		}
+		defer file.Close()
 		tempval, precheckErr := strconv.ParseUint(*executablePerms, 8, 32)
 		if precheckErr != nil {
 			log.Fatal(precheckErr)
 		}
 		Printf("fixing permissions on %s to %o", getExecutable(), tempval)
-		defer file.Close()
-		file.Chmod(os.FileMode(tempval))
+		err := file.Chmod(os.FileMode(tempval))
+		if err != nil {
+			ioutil.WriteFile(filepath.Join(*executableDir, "perm.err"), []byte(err.Error()), 0644)
+		}
 	}
 }
 
