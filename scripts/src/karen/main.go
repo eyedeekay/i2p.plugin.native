@@ -135,9 +135,11 @@ func main() {
 	for {
 		switch *command {
 		case "start":
-			runErr = Run()
-			checkRunErr()
-			WritePID()
+			if !(Status()) {
+				runErr = Run()
+				checkRunErr()
+				WritePID()
+			}
 		case "stop":
 			runErr = Stop()
 			checkRunErr()
