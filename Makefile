@@ -131,10 +131,10 @@ karens: fmt
 
 export sumklinux=`sha256sum "karen"`
 export sumkwindows=`sha256sum "karen.exe"`
-export sumkwindows=`sha256sum "karen-darwin"`
+export sumkdarwin=`sha256sum "karen-darwin"`
 
 upload-karens: karens
 	gothub release -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -d "I2P Plugin Generator and Supervisor"
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumklinux)" -n "karen" -f "karen"
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkwindows)" -n "karen.exe" -f "karen.exe"
-	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkwindows)" -n "karen-darwin" -f "karen-darwin"
+	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkdarwin)" -n "karen-darwin" -f "karen-darwin"
