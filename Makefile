@@ -1,5 +1,7 @@
 
+CGO_ENABLED=0
 GOPATH=$(HOME)/go/
+VERSION="0.0.001"
 
 all: fmt build readme
 
@@ -109,3 +111,30 @@ clean:
 
 fmt:
 	find . -name '*.go' -exec gofmt -w -s {} \;
+
+export sumrrlinux=`sha256sum "../railroad-linux.su3"`
+export sumrrwindows=`sha256sum "../railroad-windows.su3"`
+export sumbblinux=`sha256sum "../brb-linux.su3"`
+export sumbbwindows=`sha256sum "../brb-windows.su3"`
+
+upload:
+	gothub upload -R -u eyedeekay -r "railroad" -t 0.0.031 -l "$(sumrrlinux)" -n "railroad-linux.su3" -f "../railroad-linux.su3"
+	gothub upload -R -u eyedeekay -r "railroad" -t 0.0.031 -l "$(sumrrwindows)" -n "railroad-windows.su3" -f "../railroad-windows.su3"
+	gothub upload -R -u eyedeekay -r "brb" -t v0.0.09 -l "$(sumbblinux)" -n "brb-linux.su3" -f "../brb-linux.su3"
+	gothub upload -R -u eyedeekay -r "brb" -t v0.0.09 -l "$(sumbbwindows)" -n "brb-windows.su3" -f "../brb-windows.su3"
+
+karens: fmt
+	GOOS=windows go build -o karen.exe -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
+	GOOS=linux go build -o karen -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
+	GOOS=darwin go build -o karen-darwin -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
+	file karen*
+
+export sumklinux=`sha256sum "karen"`
+export sumkwindows=`sha256sum "karen.exe"`
+export sumkwindows=`sha256sum "karen-darwin"`
+
+upload-karens: karens
+	gothub release -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -d "I2P Plugin Generator and Supervisor"
+	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumklinux)" -n "karen" -f "karen"
+	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkwindows)" -n "karen.exe" -f "karen.exe"
+	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkwindows)" -n "karen-darwin" -f "karen-darwin"
