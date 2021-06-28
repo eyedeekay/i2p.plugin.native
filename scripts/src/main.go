@@ -58,7 +58,7 @@ func flagsSet() {
 	cc.Command = flag.String("command", "", "Command to start client, defaults to $PLUGIN/exename")
 	cc.CommandArgs = flag.String("commandargs", "", "Pass arguments to command")
 	cc.StopCommand = flag.String("stopcommand", "", "Command to stop client, defaults to killall exename")
-	cc.Delay = flag.String("delaystart", "5", "Delay start of client by seconds")
+	cc.Delay = flag.String("delaystart", "1", "Delay start of client by seconds")
 	cc.Start = flag.Bool("autostart", true, "Start client automatically")
 	executable = *flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
 	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")

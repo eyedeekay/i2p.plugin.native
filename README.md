@@ -31,7 +31,7 @@ Usage of ./scripts/bin/i2p.plugin.native:
   -date string
     	Release Date
   -delaystart string
-    	Delay start of client by seconds (default "5")
+    	Delay start of client by seconds (default "1")
   -desc string
     	Plugin description
   -exename string

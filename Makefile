@@ -40,9 +40,10 @@ railroad-example: all clean railroad-lin
 		-autostart=true \
 		-clientname=railroad \
 		-consolename="Railroad Blog" \
-		-delaystart="5" \
+		-delaystart="1" \
 		-desc="$(cat desc)" \
 		-exename=railroad \
+		-exeperm=0755 \
 		-license=MIT \
 		-res=config
 	cp -v *.su3 ../railroad-linux.su3
@@ -60,9 +61,10 @@ brb-example: all clean brb-lin
 		-clientname=brb \
 		-command="\$$PLUGIN/lib/brb -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
 		-consolename="BRB IRC" \
-		-delaystart="5" \
+		-delaystart="1" \
 		-desc="$(cat ircdesc)" \
 		-exename=brb \
+		-exeperm=0755 \
 		-license=MIT
 	cp -v *.su3 ../brb-linux.su3
 	unzip -o brb.zip -d brb-zip
@@ -78,7 +80,7 @@ railroad-example-win: all clean railroad-win
 		-autostart=true \
 		-clientname=railroad.exe \
 		-consolename="Railroad Blog" \
-		-delaystart="5" \
+		-delaystart="1" \
 		-desc="$(cat desc)" \
 		-exename=railroad.exe \
 		-license=MIT \
@@ -99,7 +101,7 @@ brb-example-win: all clean brb-win
 		-clientname=brb.exe \
 		-command="\$$PLUGIN/lib/brb.exe -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
 		-consolename="BRB IRC" \
-		-delaystart="5" \
+		-delaystart="1" \
 		-desc="$(cat ircdesc)" \
 		-exename=brb.exe \
 		-license=MIT \
