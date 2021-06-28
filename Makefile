@@ -43,7 +43,7 @@ railroad-example: all clean railroad-lin
 		-delaystart="1" \
 		-desc="$(cat desc)" \
 		-exename=railroad \
-		-command="\$$PLUGIN/lib/railroad -socksport 0" \
+		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
 		-license=MIT \
 		-res=config
 	cp -v *.su3 ../railroad-linux.su3
@@ -85,7 +85,7 @@ railroad-example-win: all clean railroad-win
 		-delaystart="1" \
 		-desc="$(cat desc)" \
 		-exename=railroad.exe \
-		-command="\$$PLUGIN/lib/railroad -socksport 0" \
+		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
 		-license=MIT \
 		-targetos="windows" \
 		-res=config
