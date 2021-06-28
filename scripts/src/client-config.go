@@ -85,14 +85,14 @@ func (cc *ClientConfig) PrintCommand() string {
 func (cc *ClientConfig) PrintStop() string {
 	if *targetos == "windows" {
 		if cc.StopCommand == nil || *cc.StopCommand == "" {
-			return fmt.Sprintf("clientApp.1.stopargs=karen.exe -exe %s -instruct stop\n", *cc.ClientName)
+			return fmt.Sprintf("clientApp.1.stopargs=$PLUGIN/lib/karen.exe -exe %s -exedir $PLUGIN/lib/ -instruct stop\n", *cc.ClientName)
 		}
-		return fmt.Sprintf("clientApp.1.stopargs=karen.exe -exe %s -instruct stop\n", *cc.StopCommand)
+		return fmt.Sprintf("clientApp.1.stopargs=$PLUGIN/lib/karen.exe -exe %s -exedir $PLUGIN/lib/ -instruct stop\n", *cc.StopCommand)
 	} else {
 		if cc.StopCommand == nil || *cc.StopCommand == "" {
-			return fmt.Sprintf("clientApp.1.stopargs=karen -exe %s -instruct stop\n", *cc.ClientName)
+			return fmt.Sprintf("clientApp.1.stopargs=$PLUGIN/lib/karen -exe %s -exedir $PLUGIN/lib/ -instruct stop\n", *cc.ClientName)
 		}
-		return fmt.Sprintf("clientApp.1.stopargs=karen -exe %s -instruct stop\n", *cc.StopCommand)
+		return fmt.Sprintf("clientApp.1.stopargs=$PLUGIN/lib/karen -exe %s -exedir $PLUGIN/lib/ -instruct stop\n", *cc.StopCommand)
 	}
 }
 

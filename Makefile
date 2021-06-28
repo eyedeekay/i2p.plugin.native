@@ -43,11 +43,14 @@ railroad-example: all clean railroad-lin
 		-delaystart="1" \
 		-desc="$(cat desc)" \
 		-exename=railroad \
-		-exeperm=0755 \
+		-command="\$$PLUGIN/lib/railroad -socksport 0" \
 		-license=MIT \
 		-res=config
 	cp -v *.su3 ../railroad-linux.su3
 	unzip -o railroad.zip -d railroad-zip
+
+
+
 
 brb-lin:
 	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb .
@@ -64,7 +67,6 @@ brb-example: all clean brb-lin
 		-delaystart="1" \
 		-desc="$(cat ircdesc)" \
 		-exename=brb \
-		-exeperm=0755 \
 		-license=MIT
 	cp -v *.su3 ../brb-linux.su3
 	unzip -o brb.zip -d brb-zip
@@ -83,6 +85,7 @@ railroad-example-win: all clean railroad-win
 		-delaystart="1" \
 		-desc="$(cat desc)" \
 		-exename=railroad.exe \
+		-command="\$$PLUGIN/lib/railroad -socksport 0" \
 		-license=MIT \
 		-targetos="windows" \
 		-res=config
