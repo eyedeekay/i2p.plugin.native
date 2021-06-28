@@ -135,10 +135,10 @@ func main() {
 			log.Fatal(err)
 		}
 	case "darwin":
-		if err := Copy("karen-darwin", "plugin/lib/"+"karen-darwin"); err != nil {
+		if err := Copy("karen-darwin", "plugin/lib/"+"karen"); err != nil {
 			log.Fatal(err)
 		}
-		if err := os.Chmod("plugin/lib/"+"karen-darwin", 0755); err != nil {
+		if err := os.Chmod("plugin/lib/"+"karen", 0755); err != nil {
 			log.Fatal(err)
 		}
 	}
