@@ -41,7 +41,7 @@ railroad-example: all clean railroad-lin
 		-clientname=railroad \
 		-consolename="Railroad Blog" \
 		-delaystart="1" \
-		-desc="$(cat desc)" \
+		-desc=`cat desc)` \
 		-exename=railroad \
 		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
 		-license=MIT \
@@ -65,7 +65,7 @@ brb-example: all clean brb-lin
 		-command="\$$PLUGIN/lib/brb -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
 		-consolename="BRB IRC" \
 		-delaystart="1" \
-		-desc="$(cat ircdesc)" \
+		-desc=`cat ircdesc` \
 		-exename=brb \
 		-license=MIT
 	cp -v *.su3 ../brb-linux.su3
@@ -83,7 +83,7 @@ railroad-example-win: all clean railroad-win
 		-clientname=railroad.exe \
 		-consolename="Railroad Blog" \
 		-delaystart="1" \
-		-desc="$(cat desc)" \
+		-desc=`cat desc)` \
 		-exename=railroad.exe \
 		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
 		-license=MIT \
@@ -105,7 +105,7 @@ brb-example-win: all clean brb-win
 		-command="\$$PLUGIN/lib/brb.exe -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
 		-consolename="BRB IRC" \
 		-delaystart="1" \
-		-desc="$(cat ircdesc)" \
+		-desc=`cat ircdesc` \
 		-exename=brb.exe \
 		-license=MIT \
 		-targetos="windows" \
