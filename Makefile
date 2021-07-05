@@ -159,8 +159,7 @@ snowflake-example-win: all clean snowflake-win
 		-exename=snowflake.exe \
 		-command="\$$PLUGIN/lib/snowflake.exe -log \$$PLUGIN/lib/snowflake.log" \
 		-license=MIT \
-		-targetos="windows" \
-		-res=config
+		-targetos="windows"
 	cp -v *.su3 ../snowflake-windows.su3
 	unzip -o snowflake.zip -d snowflake-zip-win
 
@@ -179,7 +178,6 @@ snowflake-example: all clean snowflake-lin
 		-desc="`cat snowdesc)`" \
 		-exename=snowflake \
 		-command="\$$PLUGIN/lib/snowflake -log \$$PLUGIN/lib/snowflake.log" \
-		-license=MIT \
-		-res=config
+		-license=MIT
 	cp -v *.su3 ../snowflake-linux.su3
 	unzip -o snowflake.zip -d snowflake-zip
