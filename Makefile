@@ -49,9 +49,6 @@ railroad-example: all clean railroad-lin
 	cp -v *.su3 ../railroad-linux.su3
 	unzip -o railroad.zip -d railroad-zip
 
-
-
-
 brb-lin:
 	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb .
 
@@ -145,3 +142,44 @@ upload-karens: karens
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumklinux)" -n "karen" -f "karen"
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkwindows)" -n "karen.exe" -f "karen.exe"
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkdarwin)" -n "karen-darwin" -f "karen-darwin"
+
+snowflake-win:
+	cp -v $(GOPATH)src/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/proxy/proxy.exe ./snowflake.exe
+
+snowflake-example-win: all clean snowflake-win
+	./scripts/bin/i2p.plugin.native -name=snowflake \
+		-signer=hankhill19580@gmail.com \
+		-version 0.0.031 \
+		-author=hankhill19580@gmail.com \
+		-autostart=true \
+		-clientname=snowflake.exe \
+		-consolename="Snowflake Donor" \
+		-delaystart="1" \
+		-desc="`cat snowdesc)`" \
+		-exename=snowflake.exe \
+		-command="\$$PLUGIN/lib/snowflake.exe -log \$$PLUGIN/lib/snowflake.log" \
+		-license=MIT \
+		-targetos="windows" \
+		-res=config
+	cp -v *.su3 ../snowflake-windows.su3
+	unzip -o snowflake.zip -d snowflake-zip-win
+
+snowflake-lin:
+	cp -v $(GOPATH)src/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/proxy/proxy ./snowflake
+
+snowflake-example: all clean snowflake-lin
+	./scripts/bin/i2p.plugin.native -name=snowflake \
+		-signer=hankhill19580@gmail.com \
+		-version 0.0.031 \
+		-author=hankhill19580@gmail.com \
+		-autostart=true \
+		-clientname=snowflake \
+		-consolename="Snowflake Donor" \
+		-delaystart="1" \
+		-desc="`cat snowdesc)`" \
+		-exename=snowflake \
+		-command="\$$PLUGIN/lib/snowflake -log \$$PLUGIN/lib/snowflake.log" \
+		-license=MIT \
+		-res=config
+	cp -v *.su3 ../snowflake-linux.su3
+	unzip -o snowflake.zip -d snowflake-zip
