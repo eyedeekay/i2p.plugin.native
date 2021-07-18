@@ -184,3 +184,6 @@ snowflake-example: all clean snowflake-lin
 
 install: all karens
 	install -m755 scripts/bin/i2p.plugin.native ~/go/bin/i2p.plugin.native
+	install -m755 karen.exe ~/go/bin/karen.exe
+	install -m755 karen ~/go/bin/karen
+	install -m755 karen-darwin ~/go/bin/karen-darwin

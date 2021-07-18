@@ -7,11 +7,12 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
+	"go/build"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
-	//	"path/filepath"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -86,6 +87,14 @@ func Copy(src, dst string) error {
 	return out.Close()
 }
 
+func goBin() string {
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		gopath = build.Default.GOPATH
+	}
+	return filepath.Join(gopath, "bin")
+}
+
 func main() {
 	flagsSet()
 
@@ -124,18 +133,33 @@ func main() {
 	}
 	switch *targetos {
 	case "windows":
-		if err := Copy("karen.exe", "plugin/lib/"+"karen.exe"); err != nil {
+		var karen = filepath.Join(goBin(), "karen.exe")
+		if _, err := os.Stat(karen); os.IsNotExist(err) {
+			log.Println(karen, "not found, looking locally")
+			karen = "karen.exe"
+		}
+		if err := Copy(karen, "plugin/lib/"+"karen.exe"); err != nil {
 			log.Fatal(err)
 		}
 	case "linux":
-		if err := Copy("karen", "plugin/lib/"+"karen"); err != nil {
+		var karen = filepath.Join(goBin(), "karen")
+		if _, err := os.Stat(karen); os.IsNotExist(err) {
+			log.Println(karen, "not found, looking locally")
+			karen = "karen"
+		}
+		if err := Copy(karen, "plugin/lib/"+"karen"); err != nil {
 			log.Fatal(err)
 		}
 		if err := os.Chmod("plugin/lib/"+"karen", 0755); err != nil {
 			log.Fatal(err)
 		}
 	case "darwin":
-		if err := Copy("karen-darwin", "plugin/lib/"+"karen"); err != nil {
+		var karen = filepath.Join(goBin(), "karen-darwin")
+		if _, err := os.Stat(karen); os.IsNotExist(err) {
+			log.Println(karen, "not found, looking locally")
+			karen = "karen-darwin"
+		}
+		if err := Copy(karen, "plugin/lib/"+"karen"); err != nil {
 			log.Fatal(err)
 		}
 		if err := os.Chmod("plugin/lib/"+"karen", 0755); err != nil {
