@@ -24,7 +24,7 @@ readme:
 	echo "Here's a copy of the usage while I work on a better README.md:" | tee -a README.md
 	echo "" | tee -a README.md
 	echo "\`\`\`markdown" | tee -a README.md
-	./scripts/bin/i2p.plugin.native -h 2>&1 | tee -a README.md
+	i2p.plugin.native -h 2>&1 | tee -a README.md
 	echo "\`\`\`" | tee -a README.md
 
 examples: clean railroad-example brb-example railroad-example-win brb-example-win
@@ -33,7 +33,7 @@ railroad-lin:
 	cp -v $(GOPATH)src/i2pgit.org/idk/railroad/railroad .
 
 railroad-example: all clean railroad-lin
-	./scripts/bin/i2p.plugin.native -name=railroad \
+	i2p.plugin.native -name=railroad \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.031 \
 		-author=hankhill19580@gmail.com \
@@ -53,7 +53,7 @@ brb-lin:
 	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb .
 
 brb-example: all clean brb-lin
-	./scripts/bin/i2p.plugin.native -name=brb \
+	i2p.plugin.native -name=brb \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.09 \
 		-author=hankhill19580@gmail.com \
@@ -72,7 +72,7 @@ railroad-win:
 	cp -v $(GOPATH)src/i2pgit.org/idk/railroad/railroad.exe .
 
 railroad-example-win: all clean railroad-win
-	./scripts/bin/i2p.plugin.native -name=railroad \
+	i2p.plugin.native -name=railroad \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.031 \
 		-author=hankhill19580@gmail.com \
@@ -93,7 +93,7 @@ brb-win:
 	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb.exe .
 
 brb-example-win: all clean brb-win
-	./scripts/bin/i2p.plugin.native -name=brb \
+	i2p.plugin.native -name=brb \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.09 \
 		-author=hankhill19580@gmail.com \
@@ -147,7 +147,7 @@ snowflake-win:
 	cp -v $(GOPATH)src/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/proxy/proxy.exe ./snowflake.exe
 
 snowflake-example-win: all clean snowflake-win
-	./scripts/bin/i2p.plugin.native -name=snowflake \
+	i2p.plugin.native -name=snowflake \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.031 \
 		-author=hankhill19580@gmail.com \
@@ -167,7 +167,7 @@ snowflake-lin:
 	cp -v $(GOPATH)src/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/proxy/proxy ./snowflake
 
 snowflake-example: all clean snowflake-lin
-	./scripts/bin/i2p.plugin.native -name=snowflake \
+	i2p.plugin.native -name=snowflake \
 		-signer=hankhill19580@gmail.com \
 		-version 0.0.031 \
 		-author=hankhill19580@gmail.com \
@@ -181,3 +181,6 @@ snowflake-example: all clean snowflake-lin
 		-license=MIT
 	cp -v *.su3 ../snowflake-linux.su3
 	unzip -o snowflake.zip -d snowflake-zip
+
+install: all karens
+	install -m755 scripts/bin/i2p.plugin.native ~/go/bin/i2p.plugin.native

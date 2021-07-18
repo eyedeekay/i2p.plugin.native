@@ -13,7 +13,7 @@ There are some examples in the Makefile for now.
 Here's a copy of the usage while I work on a better README.md:
 
 ```markdown
-Usage of ./scripts/bin/i2p.plugin.native:
+Usage of i2p.plugin.native:
   -author string
     	Author
   -autostart
