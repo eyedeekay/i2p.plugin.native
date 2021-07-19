@@ -29,87 +29,6 @@ readme:
 
 examples: clean railroad-example brb-example railroad-example-win brb-example-win
 
-railroad-lin:
-	cp -v $(GOPATH)src/i2pgit.org/idk/railroad/railroad .
-
-railroad-example: all clean railroad-lin
-	i2p.plugin.native -name=railroad \
-		-signer=hankhill19580@gmail.com \
-		-version 0.0.031 \
-		-author=hankhill19580@gmail.com \
-		-autostart=true \
-		-clientname=railroad \
-		-consolename="Railroad Blog" \
-		-delaystart="1" \
-		-desc="`cat desc)`" \
-		-exename=railroad \
-		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
-		-license=MIT \
-		-res=config
-	cp -v *.su3 ../railroad-linux.su3
-	unzip -o railroad.zip -d railroad-zip
-
-brb-lin:
-	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb .
-
-brb-example: all clean brb-lin
-	i2p.plugin.native -name=brb \
-		-signer=hankhill19580@gmail.com \
-		-version 0.0.09 \
-		-author=hankhill19580@gmail.com \
-		-autostart=true \
-		-clientname=brb \
-		-command="\$$PLUGIN/lib/brb -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
-		-consolename="BRB IRC" \
-		-delaystart="1" \
-		-desc="`cat ircdesc`" \
-		-exename=brb \
-		-license=MIT
-	cp -v *.su3 ../brb-linux.su3
-	unzip -o brb.zip -d brb-zip
-
-railroad-win:
-	cp -v $(GOPATH)src/i2pgit.org/idk/railroad/railroad.exe .
-
-railroad-example-win: all clean railroad-win
-	i2p.plugin.native -name=railroad \
-		-signer=hankhill19580@gmail.com \
-		-version 0.0.031 \
-		-author=hankhill19580@gmail.com \
-		-autostart=true \
-		-clientname=railroad.exe \
-		-consolename="Railroad Blog" \
-		-delaystart="1" \
-		-desc="`cat desc)`" \
-		-exename=railroad.exe \
-		-command="\$$PLUGIN/lib/railroad -socksport 8082" \
-		-license=MIT \
-		-targetos="windows" \
-		-res=config
-	cp -v *.su3 ../railroad-windows.su3
-	unzip -o railroad.zip -d railroad-zip-win
-
-brb-win:
-	cp -v $(GOPATH)src/github.com/eyedeekay/brb/brb.exe .
-
-brb-example-win: all clean brb-win
-	i2p.plugin.native -name=brb \
-		-signer=hankhill19580@gmail.com \
-		-version 0.0.09 \
-		-author=hankhill19580@gmail.com \
-		-autostart=true \
-		-clientname=brb.exe \
-		-command="\$$PLUGIN/lib/brb.exe -dir=\$$PLUGIN/lib -eris=true -i2psite=true" \
-		-consolename="BRB IRC" \
-		-delaystart="1" \
-		-desc="`cat ircdesc`" \
-		-exename=brb.exe \
-		-license=MIT \
-		-targetos="windows" \
-		-res=windll
-	cp -v *.su3 ../brb-windows.su3
-	unzip -o brb.zip -d brb-zip-win
-
 clean:
 	rm -rf plugin *.zip *.su3
 
@@ -120,12 +39,6 @@ export sumrrlinux=`sha256sum "../railroad-linux.su3"`
 export sumrrwindows=`sha256sum "../railroad-windows.su3"`
 export sumbblinux=`sha256sum "../brb-linux.su3"`
 export sumbbwindows=`sha256sum "../brb-windows.su3"`
-
-upload:
-	gothub upload -R -u eyedeekay -r "railroad" -t 0.0.031 -l "$(sumrrlinux)" -n "railroad-linux.su3" -f "../railroad-linux.su3"
-	gothub upload -R -u eyedeekay -r "railroad" -t 0.0.031 -l "$(sumrrwindows)" -n "railroad-windows.su3" -f "../railroad-windows.su3"
-	gothub upload -R -u eyedeekay -r "brb" -t v0.0.09 -l "$(sumbblinux)" -n "brb-linux.su3" -f "../brb-linux.su3"
-	gothub upload -R -u eyedeekay -r "brb" -t v0.0.09 -l "$(sumbbwindows)" -n "brb-windows.su3" -f "../brb-windows.su3"
 
 karens: fmt
 	GOOS=windows go build -o karen.exe -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
