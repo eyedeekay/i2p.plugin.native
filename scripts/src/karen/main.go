@@ -165,6 +165,7 @@ func main() {
 			os.Exit(0)
 		}
 	}()
+	go checkRestartInterval()
 
 	defer Stop()
 	defer removePid()
