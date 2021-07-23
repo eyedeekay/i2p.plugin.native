@@ -10,6 +10,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -18,8 +19,9 @@ var (
 	executablePerms = flag.String("exeperm", "", "Change the permissions of the executable before running it.")
 	executableArgs  = flag.String("args", "", "Pass a set of arguments to the executable")
 
-	runDir        = flag.String("rundir", "", "Directory to store runtime files")
-	restartAlways = flag.Bool("restart-always", true, "If the managed application crashes, automatically restart it.")
+	runDir          = flag.String("rundir", "", "Directory to store runtime files")
+	restartAlways   = flag.Bool("restart-always", true, "If the managed application crashes, automatically restart it.")
+	restartInterval = flag.String("restart-interval", "0m", "Periodically re-start the process Karen is managing")
 
 	command    = flag.String("instruct", "", "Tell karen to 'start', 'stop', 'restart', or check the 'status' of a command running in the supervisor")
 	commandLog = flag.String("log", "karen.log", "Redirect log to file")
@@ -30,6 +32,40 @@ var (
 
 var precheckErr error
 var runErr error
+
+func restartIntervalParsed() time.Duration {
+	str := *restartInterval
+	units := str[len(*restartInterval)-1:]
+	num := strings.Replace(str, units, "", 1)
+	delay, err := strconv.Atoi(num)
+	if err != nil {
+		panic(err)
+	}
+	switch units {
+	case "s":
+		return time.Duration(delay) * time.Second
+	case "m":
+		return time.Duration(delay) * time.Minute
+	case "h":
+		return time.Duration(delay) * time.Hour
+	case "d":
+		return time.Duration(delay) * (time.Hour * time.Duration(24))
+	default:
+		return time.Duration(delay) * time.Minute
+	}
+}
+
+func checkRestartInterval() {
+	for {
+		time.Sleep(restartIntervalParsed())
+		runErr = Stop()
+		checkRunErr()
+		if !(Status()) {
+			runErr = Run()
+			checkRunErr()
+		}
+	}
+}
 
 func checkExecutable() {
 	if *executableFile == "" {
@@ -143,8 +179,7 @@ func main() {
 		case "stop":
 			runErr = Stop()
 			checkRunErr()
-			runErr = killKaren()
-			checkRunErr()
+			*restartAlways = false
 		case "restart":
 			runErr = Stop()
 			checkRunErr()
@@ -162,31 +197,12 @@ func main() {
 		if cmd != nil {
 			cmd.Wait()
 		}
+		if !*restartAlways {
+			os.Exit(0)
+		}
 	}
 }
 
 func removePid() {
 	os.Remove(filepath.Join(*executableDir, "karen.pid"))
-}
-
-func killKaren() error {
-	bytes, err := ioutil.ReadFile(filepath.Join(*executableDir, "karen.pid"))
-	if err != nil {
-		return err
-	}
-	pid, err := strconv.Atoi(string(bytes))
-	if err != nil {
-		return err
-	}
-	proc, err := os.FindProcess(pid)
-	if err != nil {
-		return err
-	}
-	if runtime.GOOS == "windows" {
-		err = proc.Signal(os.Kill)
-	} else {
-		err = proc.Signal(os.Interrupt)
-	}
-	removePid()
-	return err
 }
