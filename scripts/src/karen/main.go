@@ -58,15 +58,15 @@ func restartIntervalParsed() time.Duration {
 func checkRestartInterval() {
 	rip := restartIntervalParsed()
 	if rip.Seconds() != 0 {
-	for {
-		time.Sleep()
-		runErr = Stop()
-		checkRunErr()
-		if !(Status()) {
-			runErr = Run()
+		for {
+			time.Sleep(rip)
+			runErr = Stop()
 			checkRunErr()
+			if !(Status()) {
+				runErr = Run()
+				checkRunErr()
+			}
 		}
-	}
 	}
 }
 
