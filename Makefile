@@ -6,7 +6,7 @@ VERSION="0.0.001"
 all: fmt build readme
 
 build:
-	go build -o ./scripts/bin/i2p.plugin.native ./scripts/src
+	go build -o .//i2p.plugin.native ./cmd/i2p.plugin.native
 
 readme:
 	echo "I2P native plugin generation tool" | tee README.md
@@ -41,9 +41,9 @@ export sumbblinux=`sha256sum "../brb-linux.su3"`
 export sumbbwindows=`sha256sum "../brb-windows.su3"`
 
 karens: fmt
-	GOOS=windows go build -o karen.exe -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
-	GOOS=linux go build -o karen -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
-	GOOS=darwin go build -o karen-darwin -ldflags "-extldflags -static" -tags netgo ./scripts/src/karen
+	GOOS=windows go build -o karen.exe -ldflags "-extldflags -static" -tags netgo ./cmd/i2p.plugin.native/karen
+	GOOS=linux go build -o karen -ldflags "-extldflags -static" -tags netgo ./cmd/i2p.plugin.native/karen
+	GOOS=darwin go build -o karen-darwin -ldflags "-extldflags -static" -tags netgo ./cmd/i2p.plugin.native/karen
 	file karen*
 
 export sumklinux=`sha256sum "karen"`
@@ -57,7 +57,7 @@ upload-karens: karens
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkdarwin)" -n "karen-darwin" -fss "karen-darwin"
 
 install: all karens
-	install -m755 scripts/bin/i2p.plugin.native ~/go/bin/i2p.plugin.native
+	install -m755 ./i2p.plugin.native ~/go/bin/i2p.plugin.native
 	install -m755 karen.exe ~/go/bin/karen.exe
 	install -m755 karen ~/go/bin/karen
 	install -m755 karen-darwin ~/go/bin/karen-darwin

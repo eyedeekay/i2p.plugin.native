@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"strings"
 )
@@ -204,10 +206,16 @@ func (pc *PluginConfig) PrintConsoleIcon() string {
 	return fmt.Sprintf("console-icon=%s\n", *pc.ConsoleIcon)
 }
 func (pc *PluginConfig) PrintConsoleIconCode() string {
-	if pc.ConsoleLinkName == nil || *pc.ConsoleLinkName == "" {
+	if pc.ConsoleIconCode == nil || *pc.ConsoleIconCode == "" {
 		return ""
 	}
-	return fmt.Sprintf("icon-code=%s\n", *pc.ConsoleLinkName)
+	bytes, err := ioutil.ReadFile(*pc.ConsoleIconCode)
+	if err != nil {
+		return ""
+	}
+	i2pbase64 := base64.NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-~")
+	i2pb64 := i2pbase64.EncodeToString(bytes)
+	return fmt.Sprintf("icon-code=%s\n", i2pb64)
 }
 
 func (pc *PluginConfig) PrintMinVersion() string {
