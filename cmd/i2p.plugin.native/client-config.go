@@ -55,14 +55,14 @@ func (cc *ClientConfig) PrintCommandArgs() string {
 }
 
 func (cc *ClientConfig) PrintCommand() string {
-	if cc.Command == nil || *cc.Command == "" {
-		if cc.ClientName != nil || *cc.ClientName != "" {
-			return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s -shellservice.name=\"%s\" -shellservice.displayname=\"%s\" %s\n", *cc.Command, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
-		}
+	if cc.ClientName != nil || *cc.ClientName != "" {
 		log.Fatal("-name is a required field.")
 	}
+	if cc.Command == nil || *cc.Command == "" {
+		return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", *cc.Command, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
+	}
 	name := strings.Split(*cc.Command, " ")[0]
-	return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s -shellservice.name=\"%s\" -shellservice.displayname=\"%s\" %s\n", name, name, name, cc.PrintCommandArgs())
+	return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", name, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
 }
 
 func (cc *ClientConfig) PrintStop() string {
