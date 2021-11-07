@@ -28,6 +28,8 @@ Usage of i2p.plugin.native:
     	Icon to use in console for Web Apps only. Use icondata for native apps.
   -consolename string
     	Name to use in the router console sidebar
+  -consoleurl string
+    	URL to use in the router console sidebar
   -date string
     	Release Date
   -delaystart string
