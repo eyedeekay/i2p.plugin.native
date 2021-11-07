@@ -55,7 +55,7 @@ func (cc *ClientConfig) PrintCommandArgs() string {
 }
 
 func (cc *ClientConfig) PrintCommand() string {
-	if cc.ClientName != nil || *cc.ClientName != "" {
+	if cc.ClientName == nil || *cc.ClientName == "" {
 		log.Fatal("-name is a required field.")
 	}
 	if cc.Command == nil || *cc.Command == "" {

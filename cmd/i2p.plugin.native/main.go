@@ -45,6 +45,7 @@ func flagsSet() {
 	//pc.ConsoleLinkNameLang []flag.String("","","")
 	pc.ConsoleIcon = flag.String("consoleicon", "", "Icon to use in console for Web Apps only. Use icondata for native apps.")
 	pc.ConsoleIconCode = flag.String("icondata", "", "Path to icon for console, which i2p.plugin.native will automatically encode")
+	pc.ConsoleLinkURL = flag.String("consoleurl", "", "URL to use in the router console sidebar")
 	pc.MinVersion = flag.String("min", "", "Minimum I2P version")
 	pc.MaxVerion = flag.String("max", "", "Maximum I2P version")
 	pc.MinJava = flag.String("min-java", "", "Minimum Java version")
