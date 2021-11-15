@@ -7,12 +7,14 @@ import (
 )
 
 type ClientConfig struct {
-	ClientName  *string
-	Command     *string
-	CommandArgs *string
-	StopCommand *string
-	Delay       *string
-	Start       *bool
+	ClientName     *string
+	Command        *string
+	CommandArgs    *string
+	StopCommand    *string
+	Delay          *string
+	Start          *bool
+	NoShellService *bool
+	CommandInPath  *bool
 }
 
 func karenConfig() string {
@@ -20,7 +22,7 @@ func karenConfig() string {
 }
 
 func (cc *ClientConfig) Print() string {
-	r := "clientApp.0.main=net.i2p.util.ShellService\n"
+	r := "clientApp.0.main=net.i2p.apps.ShellService\n"
 	r += cc.PrintClientName()
 	r += cc.PrintCommand()
 	r += cc.PrintStop()
@@ -58,11 +60,15 @@ func (cc *ClientConfig) PrintCommand() string {
 	if cc.ClientName == nil || *cc.ClientName == "" {
 		log.Fatal("-name is a required field.")
 	}
+	CIP := ""
+	if cc.CommandInPath == nil || !*cc.CommandInPath {
+		CIP = "$PLUGIN/lib/"
+	}
 	if cc.Command == nil || *cc.Command == "" {
-		return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", *cc.Command, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
+		return fmt.Sprintf("clientApp.0.args=%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, *cc.Command, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
 	}
 	name := strings.Split(*cc.Command, " ")[0]
-	return fmt.Sprintf("clientApp.0.args=$PLUGIN/lib/%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", name, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
+	return fmt.Sprintf("clientApp.0.args=%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, name, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
 }
 
 func (cc *ClientConfig) PrintStop() string {
