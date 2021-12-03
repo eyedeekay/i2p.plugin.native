@@ -22,7 +22,7 @@ func karenConfig() string {
 }
 
 func (cc *ClientConfig) Print() string {
-	r := "clientApp.0.main=net.i2p.apps.ShellService\n"
+	r := "clientApp.0.main=net.i2p.app.ShellService\n"
 	r += cc.PrintClientName()
 	r += cc.PrintCommand()
 	r += cc.PrintStop()

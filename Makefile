@@ -6,7 +6,7 @@ VERSION="0.0.001"
 all: fmt build readme
 
 build:
-	go build -o .//i2p.plugin.native ./cmd/i2p.plugin.native
+	go build -o ./i2p.plugin.native ./cmd/i2p.plugin.native
 
 readme:
 	echo "I2P native plugin generation tool" | tee README.md
@@ -56,8 +56,5 @@ upload-karens: karens
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkwindows)" -n "karen.exe" -f "karen.exe"
 	gothub upload -R -u eyedeekay -r "i2p.plugin.native" -t v$(VERSION) -l "$(sumkdarwin)" -n "karen-darwin" -fss "karen-darwin"
 
-install: all karens
+install: all
 	install -m755 ./i2p.plugin.native ~/go/bin/i2p.plugin.native
-	install -m755 karen.exe ~/go/bin/karen.exe
-	install -m755 karen ~/go/bin/karen
-	install -m755 karen-darwin ~/go/bin/karen-darwin
