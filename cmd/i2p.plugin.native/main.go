@@ -28,6 +28,7 @@ var cc ClientConfig
 var executable string
 var resdir *string
 var targetos *string
+var noautosuffixwindows *bool
 
 func flagsSet() {
 	pc.PluginName = flag.String("name", "", "Name of the plugin")
@@ -67,6 +68,7 @@ func flagsSet() {
 	executable = *flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
 	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")
 	targetos = flag.String("targetos", runtime.GOOS, "Target to run the plugin on")
+	noautosuffixwindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
 	flag.Parse()
 }
 
@@ -134,43 +136,8 @@ func main() {
 	if err := os.Chmod("plugin/lib/"+executable, 0755); err != nil {
 		log.Fatal(err)
 	}
-	switch *targetos {
-	case "windows":
-		var karen = filepath.Join(goBin(), "karen.exe")
-		if _, err := os.Stat(karen); os.IsNotExist(err) {
-			log.Println(karen, "not found, looking locally")
-			karen = "karen.exe"
-		}
-		if err := Copy(karen, "plugin/lib/"+"karen.exe"); err != nil {
-			log.Fatal(err)
-		}
-	case "linux":
-		var karen = filepath.Join(goBin(), "karen")
-		if _, err := os.Stat(karen); os.IsNotExist(err) {
-			log.Println(karen, "not found, looking locally")
-			karen = "karen"
-		}
-		if err := Copy(karen, "plugin/lib/"+"karen"); err != nil {
-			log.Fatal(err)
-		}
-		if err := os.Chmod("plugin/lib/"+"karen", 0755); err != nil {
-			log.Fatal(err)
-		}
-	case "darwin":
-		var karen = filepath.Join(goBin(), "karen-darwin")
-		if _, err := os.Stat(karen); os.IsNotExist(err) {
-			log.Println(karen, "not found, looking locally")
-			karen = "karen-darwin"
-		}
-		if err := Copy(karen, "plugin/lib/"+"karen"); err != nil {
-			log.Fatal(err)
-		}
-		if err := os.Chmod("plugin/lib/"+"karen", 0755); err != nil {
-			log.Fatal(err)
-		}
-	}
 	if resdir != nil && *resdir != "" {
-		if err := copy.Copy(*resdir, "plugin/lib/"); err != nil {
+		if err := copy.Copy(*resdir, "plugin/"); err != nil {
 			log.Fatal(err)
 		}
 	}

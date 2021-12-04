@@ -21,7 +21,7 @@ Usage of i2p.plugin.native:
   -clientname string
     	Name of the client, defaults to same as plugin
   -command string
-    	Command to start client, defaults to $PLUGIN/exename
+    	Command to start client, defaults to $PLUGIN/lib/exename
   -commandargs string
     	Pass arguments to command
   -consoleicon string
@@ -62,6 +62,8 @@ Usage of i2p.plugin.native:
     	Don't automatically start the plugin after installing
   -nostop
     	Disable stopping the plugin from the console
+  -pathcommand
+    	Wrap a command found in the system $PATH, don't prefix the command with $PLUGIN/lib/
   -res string
     	a directory of additional resources to include in the plugin
   -restart
