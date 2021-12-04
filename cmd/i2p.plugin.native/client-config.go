@@ -70,7 +70,7 @@ func (cc *ClientConfig) PrintCommand() string {
 		exesuffix = ".exe"
 	}
 	if cc.Command == nil || *cc.Command == "" {
-		return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, *cc.Command, exesuffix, *cc.ClientName, *cc.ClientDisplayName, *cc.ClientName, cc.PrintCommandArgs())
+		return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, *cc.Command, exesuffix, *cc.ClientName, *cc.ClientDisplayName, cc.PrintCommandArgs())
 	}
 	name := strings.Split(*cc.Command, " ")[0]
 	return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, name, exesuffix, *cc.ClientName, *cc.ClientDisplayName, cc.PrintCommandArgs())
