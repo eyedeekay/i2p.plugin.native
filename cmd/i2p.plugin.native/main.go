@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"go/build"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -29,6 +30,20 @@ var executable string
 var resdir *string
 var targetos *string
 var noautosuffixwindows *bool
+
+func find(root, ext string) []string {
+	var a []string
+	filepath.WalkDir(root, func(s string, d fs.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+		if filepath.Ext(d.Name()) == ext {
+			a = append(a, s)
+		}
+		return nil
+	})
+	return a
+}
 
 func flagsSet() {
 	pc.PluginName = flag.String("name", "", "Name of the plugin")
@@ -116,13 +131,28 @@ func main() {
 
 	fmt.Printf("executable:%s\n", executable)
 	fmt.Printf("resources:%s\n", *resdir)
-	fmt.Printf("plugin.config:\n\t%s\n", pc.Print())
-	fmt.Printf("client.config:\n\t%s\n", cc.Print())
 
 	os.RemoveAll("plugin")
 	if err := os.MkdirAll("plugin/lib", 0755); err != nil {
 		log.Fatal(err)
 	}
+
+	if resdir != nil && *resdir != "" {
+		files := find(filepath.Join(*resdir, "lib"), ".jar")
+		for i, file := range files {
+			cleaned := strings.Replace(file, *resdir, "$PLUGIN/", 1)
+			cc.ExtendClassPath += cleaned
+			if i != len(files)-1 {
+				cc.ExtendClassPath += ","
+			}
+		}
+		if err := copy.Copy(*resdir, "plugin/"); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	fmt.Printf("plugin.config:\n\t%s\n", pc.Print())
+	fmt.Printf("client.config:\n\t%s\n", cc.Print())
 
 	if err := ioutil.WriteFile("plugin/plugin.config", []byte(pc.Print()), 0644); err != nil {
 		log.Fatal(err)
@@ -137,11 +167,7 @@ func main() {
 	if err := os.Chmod("plugin/lib/"+executable, 0755); err != nil {
 		log.Fatal(err)
 	}
-	if resdir != nil && *resdir != "" {
-		if err := copy.Copy(*resdir, "plugin/"); err != nil {
-			log.Fatal(err)
-		}
-	}
+
 	if err := createZip(); err != nil {
 		log.Fatal(err)
 	}

@@ -16,6 +16,7 @@ type ClientConfig struct {
 	Start             *bool
 	NoShellService    *bool
 	CommandInPath     *bool
+	ExtendClassPath   string
 }
 
 func karenConfig() string {
@@ -29,8 +30,16 @@ func (cc *ClientConfig) Print() string {
 	r += cc.PrintStop()
 	r += cc.PrintDelay()
 	r += cc.PrintStart()
+	r += cc.PrintLibraries()
 	r += karenConfig()
 	return r
+}
+
+func (cc *ClientConfig) PrintLibraries() string {
+	if cc.ExtendClassPath != "" {
+		return fmt.Sprintf("clientApp.0.classpath=%s\n", cc.ExtendClassPath)
+	}
+	return ""
 }
 
 func (cc *ClientConfig) CheckClientName(name string) string {
