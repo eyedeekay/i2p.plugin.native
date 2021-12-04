@@ -58,6 +58,8 @@ Usage of i2p.plugin.native:
     	Minimum Jetty version
   -name string
     	Name of the plugin
+  -noautosuffixwindows
+    	Don't automatically add .exe to exename on Windows
   -nostart
     	Don't automatically start the plugin after installing
   -nostop

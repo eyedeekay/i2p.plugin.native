@@ -70,6 +70,7 @@ func flagsSet() {
 	targetos = flag.String("targetos", runtime.GOOS, "Target to run the plugin on")
 	noautosuffixwindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
 	flag.Parse()
+	cc.ClientDisplayName = pc.ConsoleLinkName
 }
 
 func Copy(src, dst string) error {

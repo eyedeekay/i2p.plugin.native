@@ -7,14 +7,15 @@ import (
 )
 
 type ClientConfig struct {
-	ClientName     *string
-	Command        *string
-	CommandArgs    *string
-	StopCommand    *string
-	Delay          *string
-	Start          *bool
-	NoShellService *bool
-	CommandInPath  *bool
+	ClientName        *string
+	ClientDisplayName *string
+	Command           *string
+	CommandArgs       *string
+	StopCommand       *string
+	Delay             *string
+	Start             *bool
+	NoShellService    *bool
+	CommandInPath     *bool
 }
 
 func karenConfig() string {
@@ -69,10 +70,10 @@ func (cc *ClientConfig) PrintCommand() string {
 		exesuffix = ".exe"
 	}
 	if cc.Command == nil || *cc.Command == "" {
-		return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, *cc.Command, exesuffix, *cc.ClientName, *cc.ClientName, cc.PrintCommandArgs())
+		return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, *cc.Command, exesuffix, *cc.ClientDisplayName, *cc.ClientName, cc.PrintCommandArgs())
 	}
 	name := strings.Split(*cc.Command, " ")[0]
-	return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, name, *cc.ClientName, exesuffix, *cc.ClientName, cc.PrintCommandArgs())
+	return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, name, *cc.ClientName, exesuffix, *cc.ClientDisplayName, cc.PrintCommandArgs())
 }
 
 func (cc *ClientConfig) PrintStop() string {
