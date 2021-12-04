@@ -142,7 +142,8 @@ func main() {
 		for i, file := range files {
 			cleaned := strings.Replace(file, *resdir, "$PLUGIN/", 1)
 			cc.ExtendClassPath += cleaned
-			if i != len(files)-1 {
+			fmt.Printf("%d:%d-%s\n", i,len(files) cleaned)
+			if i != len(files) { //-1 {
 				cc.ExtendClassPath += ","
 			}
 		}
