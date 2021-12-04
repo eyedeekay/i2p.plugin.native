@@ -73,7 +73,7 @@ func (cc *ClientConfig) PrintCommand() string {
 		return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, *cc.Command, exesuffix, *cc.ClientDisplayName, *cc.ClientName, cc.PrintCommandArgs())
 	}
 	name := strings.Split(*cc.Command, " ")[0]
-	return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, name, *cc.ClientName, exesuffix, *cc.ClientDisplayName, cc.PrintCommandArgs())
+	return fmt.Sprintf("clientApp.0.args=%s%s%s -shellservice.name \"%s\" -shellservice.displayname \"%s\" %s\n", CIP, name, exesuffix, exesuffix, *cc.ClientDisplayName, cc.PrintCommandArgs())
 }
 
 func (cc *ClientConfig) PrintStop() string {
