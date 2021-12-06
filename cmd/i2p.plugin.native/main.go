@@ -14,7 +14,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
+	//	"runtime"
 	"strings"
 
 	"github.com/fuxingZhang/zip"
@@ -82,7 +82,7 @@ func flagsSet() {
 	cc.CommandInPath = flag.Bool("pathcommand", false, "Wrap a command found in the system $PATH, don't prefix the command with $PLUGIN/lib/")
 	executable = *flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
 	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")
-	targetos = flag.String("targetos", runtime.GOOS, "Target to run the plugin on")
+	targetos = flag.String("targetos", os.Getenv("GOOS"), "Target to run the plugin on")
 	noautosuffixwindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
 	flag.Parse()
 	cc.ClientDisplayName = pc.ConsoleLinkName
