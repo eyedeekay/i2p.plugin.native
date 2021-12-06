@@ -14,6 +14,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
 	//	"runtime"
 	"strings"
 
@@ -162,7 +163,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := Copy(executable, "plugin/lib/"+executable); err != nil {
+	exesuffix := ""
+	if *targetos == "windows" && !*noautosuffixwindows {
+		if !strings.HasSuffix(executable, ".exe") {
+			exesuffix = ".exe"
+		}
+	}
+
+	if err := Copy(executable, "plugin/lib/"+executable+exesuffix); err != nil {
 		log.Fatal(err)
 	}
 	if err := os.Chmod("plugin/lib/"+executable, 0755); err != nil {

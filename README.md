@@ -75,7 +75,7 @@ Usage of i2p.plugin.native:
   -stopcommand string
     	Command to stop client, defaults to killall exename
   -targetos string
-    	Target to run the plugin on (default "linux")
+    	Target to run the plugin on
   -updateonly
     	Only allow updates with this plugin, fail if no previous installation exists
   -updateurl string
