@@ -173,7 +173,7 @@ func main() {
 	if err := Copy(executable, "plugin/lib/"+executable+exesuffix); err != nil {
 		log.Fatal(err)
 	}
-	if err := os.Chmod("plugin/lib/"+executable, 0755); err != nil {
+	if err := os.Chmod("plugin/lib/"+executable+exesuffix, 0755); err != nil {
 		log.Fatal(err)
 	}
 
