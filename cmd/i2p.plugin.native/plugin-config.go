@@ -153,9 +153,9 @@ func (pc *PluginConfig) PrintLicense() string {
 
 func (pc *PluginConfig) PrintWebsite() string {
 	if pc.Website == nil || *pc.Website == "" {
-		return fmt.Sprintf("website=%s%s%s\n", "http://", *pc.PluginName, ".i2p")
+		return fmt.Sprintf("websiteURL=%s%s%s\n", "http://", *pc.PluginName, ".i2p")
 	}
-	return fmt.Sprintf("website=%s\n", *pc.Website)
+	return fmt.Sprintf("websiteURL=%s\n", *pc.Website)
 }
 func (pc *PluginConfig) PrintUpdateURL() string {
 	if pc.UpdateURL == nil || *pc.UpdateURL == "" {
