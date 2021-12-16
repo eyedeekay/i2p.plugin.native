@@ -19,6 +19,9 @@ echo "Using environment:"
 echo "  I2P=$I2P"
 echo "  CONFIG=$CONFIG"
 echo "  PLUGIN=$PLUGIN"
+echo "  PLUGINPATH=$PLUGINPATH"
+echo "  ARGS=$ARGS"
+echo "  COMMAND="$PLUGINPATH" -$ARGS"
 "$PLUGINPATH" -$ARGS > log.log 2> err.log &
 tail -f log.log err.log
 
