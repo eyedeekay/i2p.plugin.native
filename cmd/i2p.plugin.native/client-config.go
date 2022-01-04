@@ -23,8 +23,10 @@ func karenConfig() string {
 	return ""
 }
 
+var javaShellService = "net.i2p.router.web.ShellService"
+
 func (cc *ClientConfig) Print() string {
-	r := "clientApp.0.main=net.i2p.app.CorrectedShellService\n"
+	r := "clientApp.0.main=" + javaShellService + "\n"
 	r += cc.PrintClientName()
 	r += cc.PrintCommand()
 	r += cc.PrintStop()
