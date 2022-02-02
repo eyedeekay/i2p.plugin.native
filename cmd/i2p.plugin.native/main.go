@@ -46,6 +46,8 @@ func find(root, ext string) []string {
 	return a
 }
 
+var javaShellService = "net.i2p.router.web.ShellService"
+
 func flagsSet() {
 	pc.PluginName = flag.String("name", "", "Name of the plugin")
 	pc.KeyName = flag.String("key", "", "Key to use(omit for su3)")
@@ -85,6 +87,7 @@ func flagsSet() {
 	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")
 	targetos = flag.String("targetos", os.Getenv("GOOS"), "Target to run the plugin on")
 	noautosuffixwindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
+	cc.JavaShellService = flag.String("javashellservice", javaShellService, "specify ShellService java path")
 	flag.Parse()
 	cc.ClientDisplayName = pc.ConsoleLinkName
 }

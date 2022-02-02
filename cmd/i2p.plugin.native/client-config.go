@@ -17,16 +17,15 @@ type ClientConfig struct {
 	NoShellService    *bool
 	CommandInPath     *bool
 	ExtendClassPath   string
+	JavaShellService  *string
 }
 
 func karenConfig() string {
 	return ""
 }
 
-var javaShellService = "net.i2p.router.web.ShellService"
-
 func (cc *ClientConfig) Print() string {
-	r := "clientApp.0.main=" + javaShellService + "\n"
+	r := "clientApp.0.main=" + *cc.JavaShellService + "\n"
 	r += cc.PrintClientName()
 	r += cc.PrintCommand()
 	r += cc.PrintStop()

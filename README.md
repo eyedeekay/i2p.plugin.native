@@ -1,16 +1,24 @@
-I2P native plugin generation tool
-=================================
+ShellService Plugin Generator
+=============================
 
-I wrote this way faster than I documented it. Shocking, right?
+  Generates a valid ShellService plugin from a single script or executable. A
+ShellService plugin is an application which runs as a process which is managed
+by the I2P sofware. This allows I2P to manage the lifetime of a non-JVM
+application by monitoring it. That way, plugins don't risk outliving the I2P
+router because the router loses track of them.
 
-This is a handy little tool for assembling I2P plugins when those
-plugins don't have a clean way to interface with the JVM, or just don't
-need one. Think of it a little like `checkinstall` but for I2P Plugins.
-Right now it mostly works, and it's pretty cleanly put together.
+  A ShellService plugin should not "daemonize" itself or othewise fork itself to the
+background. The I2P router will manage it as a "Client Application" and daemonizing
+it will break this. If your process forks itself to the background by default, it
+must have this feature disabled to work as a ShellService.
 
-There are some examples in the Makefile for now.
-
-Here's a copy of the usage while I work on a better README.md:
+  ShellService adds additional "arguments" to the applications in question,
+which are used to configure the ShellService. In order to function correctly,
+the ShellService must be named so that the name of the Plugin, i.e. `name` in
+plugin.config, must match the `-shellservice.name` argument added by the
+ShellService class. If it does not, the ShellService will be unable to look up
+the plugin process. If the final elements of the ShellService name are `-$OS-$ARCH`
+or `-$OS` they may be optionally omitted.
 
 ```markdown
 Usage of i2p.plugin.native:
