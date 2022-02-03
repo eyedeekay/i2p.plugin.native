@@ -1,23 +1,31 @@
-package main
+package shellservice
 
 import (
 	"fmt"
+	"io"
+	"io/fs"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
 type ClientConfig struct {
-	ClientName        *string
-	ClientDisplayName *string
-	Command           *string
-	CommandArgs       *string
-	StopCommand       *string
-	Delay             *string
-	Start             *bool
-	NoShellService    *bool
-	CommandInPath     *bool
-	ExtendClassPath   string
-	JavaShellService  *string
+	ClientName          *string
+	ClientDisplayName   *string
+	Command             *string
+	CommandArgs         *string
+	StopCommand         *string
+	Delay               *string
+	Start               *bool
+	NoShellService      *bool
+	CommandInPath       *bool
+	Executable          *string
+	ExtendClassPath     string
+	JavaShellService    *string
+	NoAutoSuffixWindows *bool
+	TargetOS            *string
+	ResourceDir         *string
 }
 
 func karenConfig() string {
@@ -76,7 +84,7 @@ func (cc *ClientConfig) PrintCommand() string {
 		CIP = "$PLUGIN/lib/"
 	}
 	exesuffix := ""
-	if *targetos == "windows" && !*noautosuffixwindows {
+	if *cc.TargetOS == "windows" && !*cc.NoAutoSuffixWindows {
 		exesuffix = ".exe"
 	}
 	if cc.Command == nil || *cc.Command == "" {
@@ -108,4 +116,74 @@ func (cc *ClientConfig) PrintStart() string {
 		return ""
 	}
 	return fmt.Sprintf("clientApp.0.startOnLoad=%t\n", *cc.Start)
+}
+
+func (cc *ClientConfig) CopyResDir() error {
+	// TODO: move the copy resdir to a function
+	// in client-config.go
+	if cc.ResourceDir != nil && *cc.ResourceDir != "" {
+		files := find(filepath.Join(*cc.ResourceDir, "lib"), ".jar")
+		for i, file := range files {
+			cleaned := strings.Replace(file, *cc.ResourceDir, "$PLUGIN/", 1)
+			cc.ExtendClassPath += cleaned
+			fmt.Printf("%d:%d-%s\n", i, len(files), cleaned)
+			if i != len(files)-1 {
+				cc.ExtendClassPath += ","
+			}
+		}
+		if err := Copy(*cc.ResourceDir, "plugin/"); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (cc *ClientConfig) CopyExecutable() error {
+	exesuffix := ""
+	if *cc.TargetOS == "windows" && !*cc.NoAutoSuffixWindows {
+		if !strings.HasSuffix(*cc.Executable, ".exe") {
+			exesuffix = ".exe"
+		}
+	}
+	if err := Copy(*cc.Executable, "plugin/lib/"+*cc.Executable+exesuffix); err != nil {
+		return err
+	}
+	if err := os.Chmod("plugin/lib/"+*cc.Executable+exesuffix, 0755); err != nil {
+		return err
+	}
+	return nil
+}
+
+func find(root, ext string) []string {
+	var a []string
+	filepath.WalkDir(root, func(s string, d fs.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+		if filepath.Ext(d.Name()) == ext {
+			a = append(a, s)
+		}
+		return nil
+	})
+	return a
+}
+
+func Copy(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, in)
+	if err != nil {
+		return err
+	}
+	return out.Close()
 }

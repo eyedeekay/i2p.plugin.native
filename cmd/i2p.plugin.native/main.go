@@ -2,24 +2,18 @@ package main
 
 import (
 	//	"archive/zip"
-	"crypto/rsa"
-	"crypto/x509"
-	"encoding/pem"
+
 	"flag"
 	"fmt"
 	"go/build"
-	"io"
-	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 
 	//	"runtime"
-	"strings"
 
-	"github.com/fuxingZhang/zip"
-	"github.com/otiai10/copy"
+	. "i2pgit.org/idk/i2p.plugin.native"
 
 	"i2pgit.org/idk/reseed-tools/su3"
 )
@@ -27,24 +21,11 @@ import (
 var pc PluginConfig
 var cc ClientConfig
 
-var executable string
-var resdir *string
-var targetos *string
-var noautosuffixwindows *bool
+//var executable string
+//var resdir *string
 
-func find(root, ext string) []string {
-	var a []string
-	filepath.WalkDir(root, func(s string, d fs.DirEntry, e error) error {
-		if e != nil {
-			return e
-		}
-		if filepath.Ext(d.Name()) == ext {
-			a = append(a, s)
-		}
-		return nil
-	})
-	return a
-}
+//var targetos *string
+//var noautosuffixwindows *bool
 
 var javaShellService = "net.i2p.router.web.ShellService"
 
@@ -52,6 +33,7 @@ func flagsSet() {
 	pc.PluginName = flag.String("name", "", "Name of the plugin")
 	pc.KeyName = flag.String("key", "", "Key to use(omit for su3)")
 	pc.Signer = flag.String("signer", "", "Signer of the plugin")
+	pc.SignerDirectory = flag.String("signer-dir", "", "Directory to look for signing keys")
 	pc.Version = flag.String("version", "", "Version of the plugin")
 	pc.License = flag.String("license", "", "License of the plugin")
 	pc.Date = flag.String("date", "", "Release Date")
@@ -83,33 +65,13 @@ func flagsSet() {
 	cc.Start = flag.Bool("autostart", true, "Start client automatically")
 	//cc.NoShellService = flag.Bool("noshellservice", false, "Use ShellCommand+Karen instead of ShellService to generate plugin")
 	cc.CommandInPath = flag.Bool("pathcommand", false, "Wrap a command found in the system $PATH, don't prefix the command with $PLUGIN/lib/")
-	executable = *flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
-	resdir = flag.String("res", "", "a directory of additional resources to include in the plugin")
-	targetos = flag.String("targetos", os.Getenv("GOOS"), "Target to run the plugin on")
-	noautosuffixwindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
+	cc.Executable = flag.String("exename", "", "Name of the executable the plugin will run, defaults to name")
+	cc.ResourceDir = flag.String("res", "", "a directory of additional resources to include in the plugin")
+	cc.TargetOS = flag.String("targetos", os.Getenv("GOOS"), "Target to run the plugin on")
+	cc.NoAutoSuffixWindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
 	cc.JavaShellService = flag.String("javashellservice", javaShellService, "specify ShellService java path")
 	flag.Parse()
 	cc.ClientDisplayName = pc.ConsoleLinkName
-}
-
-func Copy(src, dst string) error {
-	in, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-	defer in.Close()
-
-	out, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
-	_, err = io.Copy(out, in)
-	if err != nil {
-		return err
-	}
-	return out.Close()
 }
 
 func goBin() string {
@@ -123,37 +85,25 @@ func goBin() string {
 func main() {
 	flagsSet()
 
-	if executable != "" {
-		cc.ClientName = &executable
+	if *cc.Executable != "" {
+		*cc.ClientName = *cc.Executable
 	}
 
 	cc.CheckClientName(*pc.PluginName)
 
-	if executable == "" {
-		executable = *cc.ClientName
+	if *cc.Executable == "" {
+		*cc.Executable = *cc.ClientName
 	}
 
-	fmt.Printf("executable:%s\n", executable)
-	fmt.Printf("resources:%s\n", *resdir)
+	fmt.Printf("executable:%s\n", *cc.Executable)
+	fmt.Printf("resources:%s\n", *cc.ResourceDir)
 
 	os.RemoveAll("plugin")
 	if err := os.MkdirAll("plugin/lib", 0755); err != nil {
 		log.Fatal(err)
 	}
-
-	if resdir != nil && *resdir != "" {
-		files := find(filepath.Join(*resdir, "lib"), ".jar")
-		for i, file := range files {
-			cleaned := strings.Replace(file, *resdir, "$PLUGIN/", 1)
-			cc.ExtendClassPath += cleaned
-			fmt.Printf("%d:%d-%s\n", i, len(files), cleaned)
-			if i != len(files)-1 {
-				cc.ExtendClassPath += ","
-			}
-		}
-		if err := copy.Copy(*resdir, "plugin/"); err != nil {
-			log.Fatal(err)
-		}
+	if err := cc.CopyResDir(); err != nil {
+		log.Fatal(err)
 	}
 
 	fmt.Printf("plugin.config:\n\t%s\n", pc.Print())
@@ -166,17 +116,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	exesuffix := ""
-	if *targetos == "windows" && !*noautosuffixwindows {
-		if !strings.HasSuffix(executable, ".exe") {
-			exesuffix = ".exe"
-		}
-	}
-
-	if err := Copy(executable, "plugin/lib/"+executable+exesuffix); err != nil {
-		log.Fatal(err)
-	}
-	if err := os.Chmod("plugin/lib/"+executable+exesuffix, 0755); err != nil {
+	// TODO: move exe-copy logic into plugin-config.go
+	if err := cc.CopyExecutable(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -195,49 +136,9 @@ func main() {
 }
 
 func createZip() error {
-	err := zip.Dir("plugin", *pc.PluginName+".zip", false)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return err
+	return pc.CreateZip()
 }
 
 func createSu3() (*su3.File, error) {
-	su3File := su3.New()
-	su3File.FileType = su3.FileTypeZIP
-	su3File.ContentType = su3.ContentTypePlugin
-	su3File.Version = []byte(*pc.Version)
-
-	err := createZip()
-	if err != err {
-		return nil, err
-	}
-	zipped, err := ioutil.ReadFile(*pc.PluginName + ".zip")
-	if err != err {
-		return nil, err
-	}
-	su3File.Content = zipped
-
-	su3File.SignerID = []byte(*pc.Signer)
-	sk, err := loadPrivateKey(*pc.Signer)
-	if err != nil {
-		return nil, err
-	}
-	su3File.Sign(sk)
-	return su3File, nil
-}
-
-func loadPrivateKey(path string) (*rsa.PrivateKey, error) {
-	privPem, err := ioutil.ReadFile(strings.Replace(path, "@", "_at_", -1) + ".pem")
-	if err != nil {
-		return nil, err
-	}
-
-	privDer, _ := pem.Decode(privPem)
-	privKey, err := x509.ParsePKCS1PrivateKey(privDer.Bytes)
-	if err != nil {
-		return nil, err
-	}
-
-	return privKey, nil
+	return pc.CreateSu3()
 }

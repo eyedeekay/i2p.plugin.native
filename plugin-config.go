@@ -1,11 +1,18 @@
-package main
+package shellservice
 
 import (
+	"crypto/rsa"
+	"crypto/x509"
 	"encoding/base64"
+	"encoding/pem"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"path/filepath"
 	"strings"
+
+	"github.com/fuxingZhang/zip"
+	"i2pgit.org/idk/reseed-tools/su3"
 )
 
 type PluginConfig struct {
@@ -37,7 +44,7 @@ type PluginConfig struct {
 	OnlyInstall         *bool     //25
 	ConsoleLinkTip      *string   //26
 	ConsoleLinkTipLang  []*string //27
-
+	SignerDirectory     *string   //28
 }
 
 func (pc *PluginConfig) Print() string {
@@ -232,4 +239,60 @@ func (pc *PluginConfig) PrintMinJetty() string {
 }
 func (pc *PluginConfig) PrintMaxJetty() string {
 	return ""
+}
+
+func (pc *PluginConfig) CreateZip() error {
+	err := zip.Dir("plugin", *pc.PluginName+".zip", false)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+}
+
+func (pc *PluginConfig) CreateSu3() (*su3.File, error) {
+	su3File := su3.New()
+	su3File.FileType = su3.FileTypeZIP
+	su3File.ContentType = su3.ContentTypePlugin
+	su3File.Version = []byte(*pc.Version)
+
+	err := pc.CreateZip()
+	if err != nil {
+		return nil, err
+	}
+	zipped, err := ioutil.ReadFile(*pc.PluginName + ".zip")
+	if err != nil {
+		return nil, err
+	}
+	su3File.Content = zipped
+
+	su3File.SignerID = []byte(*pc.Signer)
+	sk, err := pc.LoadPrivateKey(*pc.Signer)
+	if err != nil {
+		return nil, err
+	}
+	su3File.Sign(sk)
+	return su3File, nil
+}
+
+func (pc *PluginConfig) LoadPrivateKey(path string) (*rsa.PrivateKey, error) {
+	keys, err := pc.keysPath(path)
+	if err != nil {
+		return nil, err
+	}
+	privPem, err := ioutil.ReadFile(keys)
+	if err != nil {
+		return nil, err
+	}
+
+	privDer, _ := pem.Decode(privPem)
+	privKey, err := x509.ParsePKCS1PrivateKey(privDer.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return privKey, nil
+}
+
+func (pc *PluginConfig) keysPath(path string) (string, error) {
+	return filepath.Abs(filepath.Join(*pc.SignerDirectory, strings.Replace(path, "@", "_at_", -1)+".pem"))
 }
