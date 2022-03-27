@@ -2,13 +2,14 @@ package shellservice
 
 import "strings"
 
+var OSES = []string{"mac", "linux", "windows"}
+var ARCHES = []string{"386", "amd64", "arm", "arm64"}
+
 func Replace(r string) string {
-	oses := []string{"mac", "linux", "windows"}
-	for _, os := range oses {
+	for _, os := range OSES {
 		r = strings.Replace(r, os, "$OS", -1)
 	}
-	arches := []string{"386", "amd64", "arm", "arm64"}
-	for _, arch := range arches {
+	for _, arch := range ARCHES {
 		r = strings.Replace(r, arch, "$ARCH", -1)
 	}
 	return r

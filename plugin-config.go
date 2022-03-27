@@ -45,6 +45,7 @@ type PluginConfig struct {
 	ConsoleLinkTip      *string   //26
 	ConsoleLinkTipLang  []*string //27
 	SignerDirectory     *string   //28
+	FileType            *int      //29
 }
 
 func (pc *PluginConfig) Print() string {
