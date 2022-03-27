@@ -41,7 +41,7 @@ func (cc *ClientConfig) Print() string {
 	r += cc.PrintStart()
 	r += cc.PrintLibraries()
 	r += karenConfig()
-	return r
+	return Replace(r)
 }
 
 func (cc *ClientConfig) PrintLibraries() string {

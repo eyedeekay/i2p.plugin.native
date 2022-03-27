@@ -76,8 +76,7 @@ func (pc *PluginConfig) Print() string {
 	r += pc.PrintOnlyInstall()     //25
 	r += pc.PrintConsoleLinkTip()  //26
 	//27
-
-	return r
+	return Replace(r)
 }
 
 func (pc *PluginConfig) PrintPluginName() string {
