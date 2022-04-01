@@ -99,9 +99,9 @@ func main() {
 	fmt.Printf("resources:%s\n", *cc.ResourceDir)
 
 	os.RemoveAll("plugin")
-	if err := os.MkdirAll("plugin/lib", 0755); err != nil {
-		log.Fatal(err)
-	}
+	//if err := os.MkdirAll("plugin/lib", 0755); err != nil {
+	//	log.Fatal(err)
+	//}
 	if err := cc.CopyResDir(); err != nil {
 		log.Fatal(err)
 	}

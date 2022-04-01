@@ -2,12 +2,14 @@ package shellservice
 
 import (
 	"fmt"
-	"io"
+	//"io"
 	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/otiai10/copy"
 )
 
 type ClientConfig struct {
@@ -132,7 +134,7 @@ func (cc *ClientConfig) CopyResDir() error {
 			}
 		}
 		if err := Copy(*cc.ResourceDir, "plugin/"); err != nil {
-			return err
+			return fmt.Errorf("CopyResDir(): %s", err)
 		}
 	}
 	return nil
@@ -146,10 +148,10 @@ func (cc *ClientConfig) CopyExecutable() error {
 		}
 	}
 	if err := Copy(*cc.Executable, "plugin/lib/"+*cc.Executable+exesuffix); err != nil {
-		return err
+		return fmt.Errorf("CopyExecutable(): %s", err)
 	}
 	if err := os.Chmod("plugin/lib/"+*cc.Executable+exesuffix, 0755); err != nil {
-		return err
+		return fmt.Errorf("CopyExecutable(): %s", err)
 	}
 	return nil
 }
@@ -169,21 +171,5 @@ func find(root, ext string) []string {
 }
 
 func Copy(src, dst string) error {
-	in, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-	defer in.Close()
-
-	out, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
-	_, err = io.Copy(out, in)
-	if err != nil {
-		return err
-	}
-	return out.Close()
+	return copy.Copy(src, dst)
 }
