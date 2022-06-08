@@ -13,21 +13,21 @@ import (
 )
 
 type ClientConfig struct {
-	ClientName          *string
-	ClientDisplayName   *string
-	Command             *string
-	CommandArgs         *string
-	StopCommand         *string
-	Delay               *string
-	Start               *bool
-	NoShellService      *bool
-	CommandInPath       *bool
-	Executable          *string
-	ExtendClassPath     string
-	JavaShellService    *string
-	NoAutoSuffixWindows *bool
-	TargetOS            *string
-	ResourceDir         *string
+	ClientName          *string `yaml:"clientName"`
+	ClientDisplayName   *string `yaml:"clientDisplayName"`
+	Command             *string `yaml:"command"`
+	CommandArgs         *string `yaml:"commandArgs"`
+	StopCommand         *string `yaml:"stopCommand"`
+	Delay               *string `yaml:"delay"`
+	Start               *bool   `yaml:"start"`
+	NoShellService      *bool   `yaml:"noShellService"`
+	CommandInPath       *bool   `yaml:"commandInPath"`
+	Executable          *string `yaml:"executable"`
+	ExtendClassPath     string  `yaml:"-"`
+	JavaShellService    *string `yaml:"javaShellService"`
+	NoAutoSuffixWindows *bool   `yaml:"noAutoSuffixWindows"`
+	TargetOS            *string `yaml:"targetOS"`
+	ResourceDir         *string `yaml:"resourceDir"`
 }
 
 func karenConfig() string {

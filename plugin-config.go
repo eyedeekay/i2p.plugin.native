@@ -16,36 +16,36 @@ import (
 )
 
 type PluginConfig struct {
-	PluginName          *string   //0
-	KeyName             *string   //1
-	Signer              *string   //2
-	Version             *string   //3
-	License             *string   //4
-	Date                *string   //5
-	Author              *string   //6
-	Website             *string   //7
-	UpdateURL           *string   //8
-	Description         *string   //9
-	DescriptionLang     []*string //10
-	ConsoleLinkName     *string   //11
-	ConsoleLinkNameLang []*string //12
-	ConsoleLinkURL      *string   //13
-	ConsoleIcon         *string   //14
-	ConsoleIconCode     *string   //15
-	MinVersion          *string   //16
-	MaxVerion           *string   //17
-	MinJava             *string   //18
-	MinJetty            *string   //19
-	MaxJetty            *string   //20
-	NoStop              *bool     //21
-	NoStart             *bool     //22
-	Restart             *bool     //23
-	OnlyUpdate          *bool     //24
-	OnlyInstall         *bool     //25
-	ConsoleLinkTip      *string   //26
-	ConsoleLinkTipLang  []*string //27
-	SignerDirectory     *string   //28
-	FileType            *int      //29
+	PluginName          *string   `yaml:"name"`
+	KeyName             *string   `yaml:"key"`
+	Signer              *string   `yaml:"signer"`
+	Version             *string   `yaml:"version"`
+	License             *string   `yaml:"license"`
+	Date                *string   `yaml:"date"`
+	Author              *string   `yaml:"author"`
+	Website             *string   `yaml:"website"`
+	UpdateURL           *string   `yaml:"updateURL"`
+	Description         *string   `yaml:"description"`
+	DescriptionLang     []*string `yaml:"descriptionLang"`
+	ConsoleLinkName     *string   `yaml:"consoleLinkName"`
+	ConsoleLinkNameLang []*string `yaml:"consoleLinkNameLang"`
+	ConsoleLinkURL      *string   `yaml:"consoleLinkURL"`
+	ConsoleIcon         *string   `yaml:"consoleIcon"`
+	ConsoleIconCode     *string   `yaml:"consoleIconCode"`
+	MinVersion          *string   `yaml:"minVersion"`
+	MaxVerion           *string   `yaml:"maxVersion"`
+	MinJava             *string   `yaml:"minJava"`
+	MinJetty            *string   `yaml:"minJetty"`
+	MaxJetty            *string   `yaml:"maxJetty"`
+	NoStop              *bool     `yaml:"disableStop"`
+	NoStart             *bool     `yaml:"dont-start-at-install"`
+	Restart             *bool     `yaml:"restart-at-install"`
+	OnlyUpdate          *bool     `yaml:"only-update"`
+	OnlyInstall         *bool     `yaml:"only-install"`
+	ConsoleLinkTip      *string   `yaml:"consoleLinkTip"`
+	ConsoleLinkTipLang  []*string `yaml:"consoleLinkTipLang"`
+	SignerDirectory     *string   `yaml:"signerDirectory"`
+	FileType            *int      `yaml:"fileType"`
 }
 
 func (pc *PluginConfig) Print() string {
