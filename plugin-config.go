@@ -18,36 +18,36 @@ import (
 )
 
 type PluginConfig struct {
-	PluginName          *string   `yaml:"name"`
-	KeyName             *string   `yaml:"key"`
-	Signer              *string   `yaml:"signer"`
-	Version             *string   `yaml:"version"`
-	License             *string   `yaml:"license"`
-	Date                *string   `yaml:"date"`
-	Author              *string   `yaml:"author"`
-	Website             *string   `yaml:"website"`
-	UpdateURL           *string   `yaml:"updateURL"`
-	Description         *string   `yaml:"description"`
-	DescriptionLang     []*string `yaml:"descriptionLang"`
-	ConsoleLinkName     *string   `yaml:"consoleLinkName"`
-	ConsoleLinkNameLang []*string `yaml:"consoleLinkNameLang"`
-	ConsoleLinkURL      *string   `yaml:"consoleLinkURL"`
-	ConsoleIcon         *string   `yaml:"consoleIcon"`
-	ConsoleIconCode     *string   `yaml:"consoleIconCode"`
-	MinVersion          *string   `yaml:"minVersion"`
-	MaxVerion           *string   `yaml:"maxVersion"`
-	MinJava             *string   `yaml:"minJava"`
-	MinJetty            *string   `yaml:"minJetty"`
-	MaxJetty            *string   `yaml:"maxJetty"`
-	NoStop              *bool     `yaml:"disableStop"`
-	NoStart             *bool     `yaml:"dont-start-at-install"`
-	Restart             *bool     `yaml:"restart-at-install"`
-	OnlyUpdate          *bool     `yaml:"only-update"`
-	OnlyInstall         *bool     `yaml:"only-install"`
-	ConsoleLinkTip      *string   `yaml:"consoleLinkTip"`
-	ConsoleLinkTipLang  []*string `yaml:"consoleLinkTipLang"`
-	SignerDirectory     *string   `yaml:"signerDirectory"`
-	FileType            *int      `yaml:"fileType"`
+	PluginName          *string   `yaml:"name,omitempty"`
+	KeyName             *string   `yaml:"key,omitempty"`
+	Signer              *string   `yaml:"signer,omitempty"`
+	Version             *string   `yaml:"version,omitempty"`
+	License             *string   `yaml:"license,omitempty"`
+	Date                *string   `yaml:"date,omitempty"`
+	Author              *string   `yaml:"author,omitempty"`
+	Website             *string   `yaml:"website,omitempty"`
+	UpdateURL           *string   `yaml:"updateURL,omitempty"`
+	Description         *string   `yaml:"description,omitempty"`
+	DescriptionLang     []*string `yaml:"descriptionLang,omitempty"`
+	ConsoleLinkName     *string   `yaml:"consoleLinkName,omitempty"`
+	ConsoleLinkNameLang []*string `yaml:"consoleLinkNameLang,omitempty"`
+	ConsoleLinkURL      *string   `yaml:"consoleLinkURL,omitempty"`
+	ConsoleIcon         *string   `yaml:"consoleIcon,omitempty"`
+	ConsoleIconCode     *string   `yaml:"consoleIconCode,omitempty"`
+	MinVersion          *string   `yaml:"minVersion,omitempty"`
+	MaxVerion           *string   `yaml:"maxVersion,omitempty"`
+	MinJava             *string   `yaml:"minJava,omitempty"`
+	MinJetty            *string   `yaml:"minJetty,omitempty"`
+	MaxJetty            *string   `yaml:"maxJetty,omitempty"`
+	NoStop              *bool     `yaml:"disableStop,omitempty"`
+	NoStart             *bool     `yaml:"dont-start-at-install,omitempty"`
+	Restart             *bool     `yaml:"restart-at-install,omitempty"`
+	OnlyUpdate          *bool     `yaml:"only-update,omitempty"`
+	OnlyInstall         *bool     `yaml:"only-install,omitempty"`
+	ConsoleLinkTip      *string   `yaml:"consoleLinkTip,omitempty"`
+	ConsoleLinkTipLang  []*string `yaml:"consoleLinkTipLang,omitempty"`
+	SignerDirectory     *string   `yaml:"signerDirectory,omitempty"`
+	FileType            *int      `yaml:"fileType,omitempty"`
 }
 
 func (pc *PluginConfig) Print() string {
@@ -79,7 +79,8 @@ func (pc *PluginConfig) Print() string {
 	r += pc.PrintOnlyInstall()     //25
 	r += pc.PrintConsoleLinkTip()  //26
 	//27
-	return Replace(r)
+	//return Replace(r)
+	return r
 }
 
 func (pc *PluginConfig) PrintPluginName() string {

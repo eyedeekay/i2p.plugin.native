@@ -15,21 +15,21 @@ import (
 )
 
 type ClientConfig struct {
-	ClientName          *string `yaml:"clientName"`
-	ClientDisplayName   *string `yaml:"clientDisplayName"`
-	Command             *string `yaml:"command"`
-	CommandArgs         *string `yaml:"commandArgs"`
-	StopCommand         *string `yaml:"stopCommand"`
-	Delay               *string `yaml:"delay"`
-	Start               *bool   `yaml:"start"`
-	NoShellService      *bool   `yaml:"noShellService"`
-	CommandInPath       *bool   `yaml:"commandInPath"`
-	Executable          *string `yaml:"executable"`
-	ExtendClassPath     string  `yaml:"-"`
-	JavaShellService    *string `yaml:"javaShellService"`
-	NoAutoSuffixWindows *bool   `yaml:"noAutoSuffixWindows"`
-	TargetOS            *string `yaml:"targetOS"`
-	ResourceDir         *string `yaml:"resourceDir"`
+	ClientName          *string `yaml:"clientName,omitempty"`
+	ClientDisplayName   *string `yaml:"clientDisplayName,omitempty"`
+	Command             *string `yaml:"command,omitempty,omitempty"`
+	CommandArgs         *string `yaml:"commandArgs,omitempty"`
+	StopCommand         *string `yaml:"stopCommand,omitempty"`
+	Delay               *string `yaml:"delay,omitempty"`
+	Start               *bool   `yaml:"start,omitempty"`
+	NoShellService      *bool   `yaml:"noShellService,omitempty"`
+	CommandInPath       *bool   `yaml:"commandInPath,omitempty"`
+	Executable          *string `yaml:"executable,omitempty"`
+	ExtendClassPath     string  `yaml:"-,omitempty"`
+	JavaShellService    *string `yaml:"javaShellService,omitempty"`
+	NoAutoSuffixWindows *bool   `yaml:"noAutoSuffixWindows,omitempty"`
+	TargetOS            *string `yaml:"targetOS,omitempty"`
+	ResourceDir         *string `yaml:"resourceDir,omitempty"`
 }
 
 func karenConfig() string {
