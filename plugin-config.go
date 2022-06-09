@@ -300,7 +300,6 @@ func (pc *PluginConfig) keysPath(path string) (string, error) {
 }
 
 func (cc *PluginConfig) Load() error {
-	// check if plugin.yaml exists
 	if _, err := os.Stat("plugin.yaml"); os.IsNotExist(err) {
 		return nil
 	}
