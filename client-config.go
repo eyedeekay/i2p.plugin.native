@@ -4,12 +4,14 @@ import (
 	"fmt"
 	//"io"
 	"io/fs"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/otiai10/copy"
+	"gopkg.in/yaml.v3"
 )
 
 type ClientConfig struct {
@@ -154,6 +156,25 @@ func (cc *ClientConfig) CopyExecutable() error {
 		return fmt.Errorf("CopyExecutable(): %s", err)
 	}
 	return nil
+}
+
+func (cc *ClientConfig) Load() error {
+	if _, err := os.Stat("client.yaml"); os.IsNotExist(err) {
+		return nil
+	}
+	yamlFile, err := ioutil.ReadFile("client.yaml")
+	if err != nil {
+		return err
+	}
+	return yaml.Unmarshal(yamlFile, cc)
+}
+
+func (cc *ClientConfig) Save() error {
+	bytes, err := yaml.Marshal(cc)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return ioutil.WriteFile("client.yaml", bytes, 0644)
 }
 
 func find(root, ext string) []string {

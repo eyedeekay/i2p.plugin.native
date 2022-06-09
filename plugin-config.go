@@ -8,10 +8,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/fuxingZhang/zip"
+	"gopkg.in/yaml.v3"
 	"i2pgit.org/idk/reseed-tools/su3"
 )
 
@@ -295,4 +297,24 @@ func (pc *PluginConfig) LoadPrivateKey(path string) (*rsa.PrivateKey, error) {
 
 func (pc *PluginConfig) keysPath(path string) (string, error) {
 	return filepath.Abs(filepath.Join(*pc.SignerDirectory, strings.Replace(path, "@", "_at_", -1)+".pem"))
+}
+
+func (cc *PluginConfig) Load() error {
+	// check if plugin.yaml exists
+	if _, err := os.Stat("plugin.yaml"); os.IsNotExist(err) {
+		return nil
+	}
+	yamlFile, err := ioutil.ReadFile("plugin.yaml")
+	if err != nil {
+		return err
+	}
+	return yaml.Unmarshal(yamlFile, cc)
+}
+
+func (pc *PluginConfig) Save() {
+	bytes, err := yaml.Marshal(pc)
+	if err != nil {
+		fmt.Println(err)
+	}
+	ioutil.WriteFile("plugin.yaml", bytes, 0644)
 }

@@ -84,6 +84,12 @@ func goBin() string {
 
 func main() {
 	flagsSet()
+	if err := pc.Load(); err != nil {
+		log.Fatal(err)
+	}
+	if err := cc.Load(); err != nil {
+		log.Fatal(err)
+	}
 
 	if *cc.Executable != "" {
 		*cc.ClientName = *cc.Executable
@@ -102,6 +108,8 @@ func main() {
 	//if err := os.MkdirAll("plugin/lib", 0755); err != nil {
 	//	log.Fatal(err)
 	//}
+	cc.Save()
+	pc.Save()
 	if err := cc.CopyResDir(); err != nil {
 		log.Fatal(err)
 	}

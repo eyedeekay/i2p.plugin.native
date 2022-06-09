@@ -7,4 +7,7 @@ require (
 	i2pgit.org/idk/reseed-tools v0.0.9
 )
 
-require github.com/otiai10/copy v1.7.0 // indirect
+require (
+	github.com/otiai10/copy v1.7.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
