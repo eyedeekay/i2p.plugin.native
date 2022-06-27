@@ -6,7 +6,7 @@ Generates a valid ShellService plugin from a single script or executable. A Shel
 Installation:
 -------------
 
-`go install i2pgit.org/idk/i2p.plugin.native/cmd/i2p.plugin.native@f1d22fa11f62b794ca8e7288e1f4e6e522d4eb35`
+`go install i2pgit.org/idk/i2p.plugin.native/cmd/i2p.plugin.native@141dd62655d38ac6d939271bf13e5aae82fff3b3`
 
 Guidelines:
 -----------
