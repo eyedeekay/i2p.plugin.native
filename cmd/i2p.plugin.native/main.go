@@ -70,6 +70,7 @@ func flagsSet() {
 	cc.TargetOS = flag.String("targetos", os.Getenv("GOOS"), "Target to run the plugin on")
 	cc.NoAutoSuffixWindows = flag.Bool("noautosuffixwindows", false, "Don't automatically add .exe to exename on Windows")
 	cc.JavaShellService = flag.String("javashellservice", javaShellService, "specify ShellService java path")
+	cc.I2PTunnelConfig = flag.String("i2ptunnelconfig", "", "Path to I2PTunnel config file")
 	flag.Parse()
 	cc.ClientDisplayName = pc.ConsoleLinkName
 }

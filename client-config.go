@@ -30,6 +30,7 @@ type ClientConfig struct {
 	NoAutoSuffixWindows *bool   `yaml:"noAutoSuffixWindows,omitempty"`
 	TargetOS            *string `yaml:"targetOS,omitempty"`
 	ResourceDir         *string `yaml:"resourceDir,omitempty"`
+	I2PTunnelConfig     *string `yaml:"i2ptunnelConfig,omitempty"`
 }
 
 func karenConfig() string {
@@ -44,6 +45,11 @@ func (cc *ClientConfig) Print() string {
 	r += cc.PrintDelay()
 	r += cc.PrintStart()
 	r += cc.PrintLibraries()
+	r += cc.PrintI2PTunnelClientApp()
+	r += cc.PrintI2PTunnelClientName()
+	r += cc.PrintI2PTunnelClientArgs()
+	r += cc.PrintI2PTunnelClientDelay()
+	r += cc.PrintI2PTunnelClientStart()
 	r += karenConfig()
 	return Replace(r)
 }
@@ -67,6 +73,41 @@ func (cc *ClientConfig) PrintClientName() string {
 		log.Fatal("-name is a required field.")
 	}
 	return fmt.Sprintf("clientApp.0.name=%s\n", *cc.ClientName)
+}
+
+func (cc *ClientConfig) PrintI2PTunnelClientApp() string {
+	if cc.I2PTunnelConfig == nil || *cc.I2PTunnelConfig == "" {
+		return ""
+	}
+	return fmt.Sprintf("clientApp.2.main=%s\n", "net.i2p.i2ptunnel.TunnelControllerGroup")
+}
+
+func (cc *ClientConfig) PrintI2PTunnelClientName() string {
+	if cc.I2PTunnelConfig == nil || *cc.I2PTunnelConfig == "" {
+		return ""
+	}
+	return fmt.Sprintf("clientApp.1.name=%s\n", *cc.ClientName+"i2ptunnel")
+}
+
+func (cc *ClientConfig) PrintI2PTunnelClientArgs() string {
+	if cc.I2PTunnelConfig == nil || *cc.I2PTunnelConfig == "" {
+		return ""
+	}
+	return fmt.Sprintf("clientApp.1.args=$PLUGIN/%s\n", *cc.I2PTunnelConfig)
+}
+
+func (cc *ClientConfig) PrintI2PTunnelClientDelay() string {
+	if cc.I2PTunnelConfig == nil || *cc.I2PTunnelConfig == "" {
+		return ""
+	}
+	return fmt.Sprintf("clientApp.1.delay=%s\n", "-1")
+}
+
+func (cc *ClientConfig) PrintI2PTunnelClientStart() string {
+	if cc.I2PTunnelConfig == nil || *cc.I2PTunnelConfig == "" {
+		return ""
+	}
+	return fmt.Sprintf("clientApp.1.startOnLoad=%s\n", "true")
 }
 
 func (cc *ClientConfig) PrintCommandArgs() string {
