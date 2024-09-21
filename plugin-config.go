@@ -1,18 +1,20 @@
 package shellservice
 
 import (
+	"archive/zip"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	zip "github.com/eyedeekay/go-unzip/pkg/unzip"
+	//zip "github.com/eyedeekay/go-unzip/pkg/unzip"
 	"gopkg.in/yaml.v3"
 	"i2pgit.org/idk/reseed-tools/su3"
 )
@@ -245,7 +247,7 @@ func (pc *PluginConfig) PrintMaxJetty() string {
 }
 
 func (pc *PluginConfig) CreateZip() error {
-	err := zip.Dir("plugin", *pc.PluginName+".zip", false)
+	err := Dir("plugin", *pc.PluginName+".zip")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -341,4 +343,60 @@ func pluginFile() string {
 	r += operatingSystem()
 	r += architecture()
 	return r + ".yaml"
+}
+
+func Dir(source, target string) error {
+	// 1. Create a ZIP file and zip.Writer
+	f, err := os.Create(target)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	writer := zip.NewWriter(f)
+	defer writer.Close()
+
+	// 2. Go through all the files of the source
+	return filepath.Walk(source, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// 3. Create a local file header
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+
+		// set compression
+		header.Method = zip.Deflate
+
+		// 4. Set relative path of a file as the header name
+		header.Name, err = filepath.Rel(filepath.Dir(source), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			header.Name += "/"
+		}
+
+		// 5. Create writer for the file header and save content of the file
+		headerWriter, err := writer.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		_, err = io.Copy(headerWriter, f)
+		return err
+	})
 }
