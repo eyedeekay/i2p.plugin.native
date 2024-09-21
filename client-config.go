@@ -200,10 +200,10 @@ func (cc *ClientConfig) CopyExecutable() error {
 }
 
 func (cc *ClientConfig) Load() error {
-	if _, err := os.Stat("client.yaml"); os.IsNotExist(err) {
+	if _, err := os.Stat(clientFile()); os.IsNotExist(err) {
 		return nil
 	}
-	yamlFile, err := ioutil.ReadFile("client.yaml")
+	yamlFile, err := ioutil.ReadFile(clientFile())
 	if err != nil {
 		return err
 	}
@@ -215,7 +215,7 @@ func (cc *ClientConfig) Save() error {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return ioutil.WriteFile("client.yaml", bytes, 0644)
+	return ioutil.WriteFile(clientFile(), bytes, 0644)
 }
 
 func find(root, ext string) []string {
@@ -234,4 +234,17 @@ func find(root, ext string) []string {
 
 func Copy(src, dst string) error {
 	return copy.Copy(src, dst)
+}
+
+func clientFile() string {
+	goos := os.Getenv("GOOS")
+	goarch := os.Getenv("GOARCH")
+	r := "client"
+	if goos != "" {
+		r += "-" + goos
+	}
+	if goarch != "" {
+		r += "-" + goarch
+	}
+	return r + ".yaml"
 }

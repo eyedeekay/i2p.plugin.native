@@ -186,7 +186,7 @@ func (pc *PluginConfig) PrintDescription() string {
 	return fmt.Sprintf("description=%s\n", strings.Replace(strings.Replace(*pc.Description, "\n", "", -1), "\"", "", -1))
 }
 
-//func (pc *PluginConfig) PrintDescriptionLang() []string      { return []string{""} }
+// func (pc *PluginConfig) PrintDescriptionLang() []string      { return []string{""} }
 func (pc *PluginConfig) PrintConsoleLinkName() string {
 	if pc.ConsoleLinkName == nil || *pc.ConsoleLinkName == "" {
 		return ""
@@ -208,7 +208,7 @@ func (pc *PluginConfig) PrintConsoleLinkURL() string {
 	return fmt.Sprintf("consoleLinkURL=%s\n", *pc.ConsoleLinkURL)
 }
 
-//func (pc *PluginConfig) PrintConsoleLinkNameLang() []*string { return []string{""} }
+// func (pc *PluginConfig) PrintConsoleLinkNameLang() []*string { return []string{""} }
 func (pc *PluginConfig) PrintConsoleIcon() string {
 	if pc.ConsoleIcon == nil || *pc.ConsoleIcon == "" {
 		return ""
@@ -301,10 +301,10 @@ func (pc *PluginConfig) keysPath(path string) (string, error) {
 }
 
 func (cc *PluginConfig) Load() error {
-	if _, err := os.Stat("plugin.yaml"); os.IsNotExist(err) {
+	if _, err := os.Stat(pluginFile()); os.IsNotExist(err) {
 		return nil
 	}
-	yamlFile, err := ioutil.ReadFile("plugin.yaml")
+	yamlFile, err := ioutil.ReadFile(pluginFile())
 	if err != nil {
 		return err
 	}
@@ -316,5 +316,18 @@ func (pc *PluginConfig) Save() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	ioutil.WriteFile("plugin.yaml", bytes, 0644)
+	ioutil.WriteFile(pluginFile(), bytes, 0644)
+}
+
+func pluginFile() string {
+	goos := os.Getenv("GOOS")
+	goarch := os.Getenv("GOARCH")
+	r := "plugin"
+	if goos != "" {
+		r += "-" + goos
+	}
+	if goarch != "" {
+		r += "-" + goarch
+	}
+	return r + ".yaml"
 }
