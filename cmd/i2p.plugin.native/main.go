@@ -92,13 +92,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if *cc.Executable != "" {
+	if *cc.Executable != "" && *cc.ClientName == "" {
 		*cc.ClientName = *cc.Executable
 	}
 
 	cc.CheckClientName(*pc.PluginName)
 
-	if *cc.Executable == "" {
+	if *cc.Executable == "" && *cc.ClientName != "" {
 		*cc.Executable = *cc.ClientName
 	}
 
