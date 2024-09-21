@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fuxingZhang/zip"
+	zip "github.com/eyedeekay/go-unzip/pkg/unzip"
 	"gopkg.in/yaml.v3"
 	"i2pgit.org/idk/reseed-tools/su3"
 )
