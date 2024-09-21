@@ -319,15 +319,26 @@ func (pc *PluginConfig) Save() {
 	ioutil.WriteFile(pluginFile(), bytes, 0644)
 }
 
-func pluginFile() string {
-	goos := os.Getenv("GOOS")
+func architecture() string {
 	goarch := os.Getenv("GOARCH")
-	r := "plugin"
-	if goos != "" {
-		r += "-" + goos
-	}
+	r := ""
 	if goarch != "" {
 		r += "-" + goarch
 	}
+	return r
+}
+
+func operatingSystem() string {
+	goos := os.Getenv("GOOS")
+	r := ""
+	if goos != "" {
+		r += "-" + goos
+	}
+	return r
+}
+func pluginFile() string {
+	r := "plugin"
+	r += operatingSystem()
+	r += architecture()
 	return r + ".yaml"
 }

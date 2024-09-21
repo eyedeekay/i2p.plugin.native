@@ -237,14 +237,8 @@ func Copy(src, dst string) error {
 }
 
 func clientFile() string {
-	goos := os.Getenv("GOOS")
-	goarch := os.Getenv("GOARCH")
 	r := "client"
-	if goos != "" {
-		r += "-" + goos
-	}
-	if goarch != "" {
-		r += "-" + goarch
-	}
+	r += operatingSystem()
+	r += architecture()
 	return r + ".yaml"
 }
