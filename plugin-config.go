@@ -290,12 +290,12 @@ func (pc *PluginConfig) LoadPrivateKey(path string) (*rsa.PrivateKey, error) {
 	}
 
 	privDer, _ := pem.Decode(privPem)
-	privKey, err := x509.ParsePKCS8PrivateKey(privDer.Bytes)
+	privKey, err := x509.ParsePKCS1PrivateKey(privDer.Bytes)
 	if err != nil {
 		return nil, err
 	}
 
-	return privKey.(*rsa.PrivateKey), nil
+	return privKey, nil
 }
 
 func (pc *PluginConfig) keysPath(path string) (string, error) {
