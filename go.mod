@@ -1,6 +1,6 @@
 module i2pgit.org/idk/i2p.plugin.native
 
-go 1.26.0
+go 1.26.3
 
 require (
 	github.com/otiai10/copy v1.14.1
@@ -9,9 +9,12 @@ require (
 )
 
 require (
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/otiai10/mint v1.6.3 // indirect
+	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
 
 retract (
